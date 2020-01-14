@@ -1,6 +1,6 @@
 .history
 .vscode
-.__pycache__
-/.src/app/__pycache__
-/.src/tests/__pycache__
+.__pycache__/
+/.src/app/__pycache__/
+/.src/tests/__pycache__/
 .pytest_cache
