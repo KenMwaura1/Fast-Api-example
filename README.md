@@ -4,8 +4,7 @@ This repository contains code from an example api using the Fast Api framework a
 
 ## Installation method 1
 
-1. Clone this Repo
-   `git clone (https://github.com/KenMwaura1/Fast-Api-example)`
+1. Clone this Repo `git clone (https://github.com/KenMwaura1/Fast-Api-example)`
 
 2.`cd Fast-Api-example`
 
@@ -29,7 +28,11 @@ This repository contains code from an example api using the Fast Api framework a
 1. Ensure [Docker](https://docs.docker.com/install/) is installed
 2. Ensure [Docker Compose](https://docs.docker.com/compose/install/) is installed
 3. Clone this Repo`git clone (https://github.com/KenMwaura1/Fast-Api-example)`
+
 4.`cd Fast-Api-example`
+
 5.Use Docker-Compose to spin up containers `docker-compose up -d --build`
+
 6.If everything completes should be available on localhost:8002
+
 7.Docs are generated on localhost:8002/docs
