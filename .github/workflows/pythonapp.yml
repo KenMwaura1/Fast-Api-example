@@ -1,4 +1,4 @@
-name: Fast-Api tests
+name: Fast-Api-tests
 
 on: [push]
 
