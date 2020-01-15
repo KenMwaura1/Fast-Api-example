@@ -42,4 +42,4 @@ This repository contains code for asynchronous example api using the [Fast Api f
 ## Tests
 
 Tests are available using pytest
-Run them using `pytest .` while in the root directory (Fast-Api-Example)
+Run them using `pytest .` while in the root directory (/Fast-Api-example)
