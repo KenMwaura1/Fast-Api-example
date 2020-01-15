@@ -1,4 +1,5 @@
-- name: Setup PostgreSQL
+  name: Setup PostgreSQL
+  on: [push]
   uses: Harmon758/postgresql-action@v1.0.0
   with:
     # Version of PostgreSQL to use
