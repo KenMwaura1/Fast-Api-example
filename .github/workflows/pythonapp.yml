@@ -26,6 +26,17 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        # Version of PostgreSQL to use
+        postgresql version: default
+        # POSTGRES_DB - name for the default database that is created
+        postgresql db: hello_fastapi_dev
+        # POSTGRES_USER - create the specified user with superuser power
+        postgresql user: hello_fastapi
+        # POSTGRES_PASSWORD - superuser password
+        postgresql password: hello_fastapi
     - name: Test with pytest
       run: |
         pip install pytest
