@@ -27,7 +27,9 @@ This repository contains code for asynchronous example api using the [Fast Api f
 ## Installation method 2 (Run Locally using Docker)
 
 1.Ensure [Docker](https://docs.docker.com/install/) is installed
+
 2.Ensure [Docker Compose](https://docs.docker.com/compose/install/) is installed
+
 3.Clone this Repo
 `git clone (https://github.com/KenMwaura1/Fast-Api-example)`
 
