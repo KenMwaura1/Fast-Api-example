@@ -17,6 +17,15 @@ jobs:
           cd src 
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          cd src 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Lint with flake8
         run: |
           cd src/app
