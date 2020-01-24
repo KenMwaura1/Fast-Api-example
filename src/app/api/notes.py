@@ -1,10 +1,12 @@
 from app.api import crud
 from app.api.models import NoteDB, NoteSchema
-from fastapi import APIRouter, HTTPException, Path 
+from fastapi import APIRouter, HTTPException, Path, FastAPI
 from typing import List 
 
 router = APIRouter()
+app = FastAPI()
 
+@router.get("/", )
 
 @router.post("/", response_model=NoteDB, status_code=201)
 async def create_note(payload: NoteSchema):
