@@ -6,7 +6,7 @@ from typing import List
 router = APIRouter()
 app = FastAPI()
 
-@router.get("/", )
+
 
 @router.post("/", response_model=NoteDB, status_code=201)
 async def create_note(payload: NoteSchema):
