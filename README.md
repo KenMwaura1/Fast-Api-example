@@ -23,8 +23,8 @@ This repository contains code for asynchronous example api using the [Fast Api  
 Additionally create a Fast_api_dev db with user fast_api having required priviledges
    OR
 Change the DATABASE_URL variable in the .env file to reflect db settings (user:password/db)
-9. Check the app on localhost:8002
-10. Docs generated on localhost:8002/docs
+9. Check the app on [localhost:8002/notes]
+10. Api documentation generated on [localhost:8002/docs]
 
 
 ## Installation method 2 (Run Locally using Docker)
@@ -38,10 +38,14 @@ Change the DATABASE_URL variable in the .env file to reflect db settings (user:p
 
 5.Use Docker-Compose to spin up containers `docker-compose up -d --build`
 
-6.If everything completes should be available on localhost:8002
+6.If everything completes should be available on [localhost:8002/notes]
 
-7.Docs are generated on localhost:8002/docs
+7.Docs are generated on [localhost:8002/docs]
 
 ## Tests
 Tests are available using pytest
 Run them using `pytest .` while in the root directory (/Fast-Api-example)
+
+## Documentation
+
+Documentation is provided by Redoc on [http://localhost:8002/redoc]
