@@ -1,9 +1,7 @@
 # FastAPI example app
 
-![fastapi-0.46.0-informational](https://img.shields.io/badge/fastapi-0.46.0-informational)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/KenMwaura1/Fast-Api-example/Fast-Api-tests)
-![Twitter Follow](https://img.shields.io/twitter/follow/Ken_Mwaura1?logoColor=lime&style=social)
-![Fast-Api-tests](https://github.com/KenMwaura1/Fast-Api-example/workflows/Fast-Api-tests/badge.svg)
+![fastapi-0.46.0-informational](https://img.shields.io/badge/fastapi-0.46.0-informational)  ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/KenMwaura1/Fast-Api-example/Fast-Api-tests)
+![Twitter Follow](https://img.shields.io/twitter/follow/Ken_Mwaura1?logoColor=lime&style=social) ![Fast-Api-tests](https://github.com/KenMwaura1/Fast-Api-example/workflows/Fast-Api-tests/badge.svg)
 
 This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes.
 
