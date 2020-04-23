@@ -2,7 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <Test :notes="notes"> {{notes}} </Test>
+    <Test notes="notes">  </Test>
     <Api/>
   </div>
 </template>
@@ -19,10 +19,11 @@ export default {
     Api
   },
     data: function () {
+
       //let headers = {'Content-Type':'application/json'}
-        let mode = 'no-cors'
+        //let mode = 'no-cors'
       return {
-          notes:fetch('http://localhost:8002/notes/7',{mode:mode})
+          notes:Api()
     }
     }
 }
