@@ -4,8 +4,6 @@ from fastapi import APIRouter, HTTPException, Path, FastAPI
 from typing import List 
 
 router = APIRouter()
-app = FastAPI()
-
 
 
 @router.post("/", response_model=NoteDB, status_code=201)
