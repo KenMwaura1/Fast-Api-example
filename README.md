@@ -1,6 +1,6 @@
 # FastAPI example app
 
-![fastapi-0.46.0-informational](https://img.shields.io/badge/fastapi-0.46.0-informational)  ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/KenMwaura1/Fast-Api-example/Fast-Api-tests)
+![fastapi-0.46.0-informational](https://img.shields.io/badge/fastapi-0.46.0-informational) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/KenMwaura1/Fast-Api-example/Fast-Api-tests)
 ![Twitter Follow](https://img.shields.io/twitter/follow/Ken_Mwaura1?logoColor=lime&style=social) ![Fast-Api-tests](https://github.com/KenMwaura1/Fast-Api-example/workflows/Fast-Api-tests/badge.svg)
 
 This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes.
@@ -38,9 +38,9 @@ This repository contains code for asynchronous example api using the [Fast Api f
 
 5.Use Docker-Compose to spin up containers `docker-compose up -d --build`
 
-6.If everything completes should be available on [localhost:8002/notes]
+6.If everything completes should be available on [notes](localhost:8002/notes)
 
-7.Docs are generated on [localhost:8002/docs]
+7.Docs are generated on [docs](localhost:8002/docs)
 
 ## Tests
 
@@ -49,4 +49,4 @@ Run them using `pytest .` while in the root directory (/Fast-Api-example)
 
 ## Documentation
 
-Documentation is provided by Redoc on [localhost:8002/redoc]
+Open API Documentation is provided by [Redoc](localhost:8002/redoc)
