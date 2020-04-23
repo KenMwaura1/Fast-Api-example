@@ -50,4 +50,4 @@ Run them using `pytest .` while in the root directory (/Fast-Api-example)
 
 ## Documentation
 
-Documentation is provided by Redoc on [http://localhost:8002/redoc]
+Documentation is provided by Redoc on [localhost:8002/redoc]
