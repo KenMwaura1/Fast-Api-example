@@ -5,7 +5,7 @@ certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
 databases[postgresql]==0.2.6
-fastapi==0.46.0
+fastapi==0.65.2
 h11==0.9.0
 httptools==0.0.13
 idna==2.8
