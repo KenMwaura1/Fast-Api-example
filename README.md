@@ -13,7 +13,7 @@ This repository contains code for asynchronous example api using the [Fast Api f
 3. Create a virtualenv
    `python3 -m virtualenv env`
 4. Activate virtualenv
-   `source /bin/activate`
+   `source env/bin/activate`
 5. Cd into the src folder
    `cd src`
 6. Install the required packages
