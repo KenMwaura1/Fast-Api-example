@@ -3,6 +3,11 @@
 .idea
 .env
 
+# Logs
+logs
+*.log
+
+
 __pycache__/
 /src/app/__pycache__/
 /src/tests/__pycache__/
@@ -17,7 +22,7 @@ yarn-error.log*
 
 venv/ 
 # Editor directories and files
-.idea
+
 *.suo
 *.ntvs*
 *.njsproj
