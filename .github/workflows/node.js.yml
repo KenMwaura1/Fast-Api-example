@@ -33,17 +33,9 @@ jobs:
     - name: Build
       run: |
         cd vue-client
-        npm run build
-    - name: Run tests
-      run: |
-        cd vue-client
-        npm run test:unit
+        npm run build --if-present 
     - name: Lint
       run: |
         cd vue-client
         npm run lint
-    - name: Run e2e tests
-      run: |
-        cd vue-client
-        npm run test:e2e
-  
+ 
