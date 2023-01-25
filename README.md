@@ -6,6 +6,8 @@
 
 This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes.
 
+![Fast-api](images/fast-api-scrnsht.png)
+
 ## Installation method 1 (Run application locally)
 
 1. Clone this Repo
@@ -48,6 +50,50 @@ This repository contains code for asynchronous example api using the [Fast Api f
 
 9. Check the app on [notes](http://localhost:8002/notes)
 Open your browser and navigate to [docs](http://localhost:8002/docs) to view the swagger documentation for the api.
+
+## Vue Frontend (Optional)
+
+The is a simple Vue frontend using [vite](https://vitejs.dev/guide/)that was added however it is an optional step in running the application.
+
+### Installation
+
+Ensure you have [Node.js](https://nodejs.org/en/) installed. any version above 16 should work.
+
+While inside the root folder `Fast-Api-example`
+
+1. Cd into the `vue-client` folder.
+
+   ```shell
+      cd vue-client
+      ```
+
+2. Install the required dependencies.
+   for NPM:
+
+   ```shell
+      npm install
+      ```
+
+   for Yarn:
+
+   ```shell
+      yarn install
+      ```
+
+3. Start the Vue app
+   for NPM:
+
+   ```shell
+      npm run serve
+      ```
+
+   for Yarn:
+
+   ```shell
+      yarn serve
+      ```
+
+4. Open your browser and navigate to [notes](http://localhost:5173)
 
 ## Installation method 2 (Run Locally using Docker)
 
