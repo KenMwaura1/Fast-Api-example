@@ -53,7 +53,7 @@ Open your browser and navigate to [docs](http://localhost:8002/docs) to view the
 
 ## Vue Frontend (Optional)
 
-The is a simple Vue frontend using [vite](https://vitejs.dev/guide/)that was added however it is an optional step in running the application.
+The is a simple Vue frontend using [vite](https://vitejs.dev/guide/) that was added. However it is an optional step in running the application.
 
 ### Installation
 
