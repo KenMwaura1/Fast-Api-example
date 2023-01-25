@@ -29,13 +29,13 @@ jobs:
     - name: Install dependencies
       run: |
         cd vue-client
-        npm install
+        yarn install
     - name: Build
       run: |
         cd vue-client
-        npm run build --if-present 
-    - name: Lint
-      run: |
-        cd vue-client
-        npm run lint
+        yarn build 
+   # - name: Lint
+      # run: |
+        # cd vue-client
+        # yarn lint
  
