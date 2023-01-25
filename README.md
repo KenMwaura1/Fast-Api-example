@@ -3,7 +3,7 @@
 ![fastapi-0.46.0-informational](https://img.shields.io/badge/fastapi-0.46.0-informational) [![CodeQL](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml)
 [![Docker Compose Actions Workflow](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml)
 
-![Twitter Follow](https://img.shields.io/twitter/follow/Ken_Mwaura1?logoColor=lime&style=social) ![Fast-Api-tests](https://github.com/KenMwaura1/Fast-Api-example/workflows/Fast-Api-tests/badge.svg)
+[![Twitter](https://badgen.net/badge/icon/twitter?icon=twitter&label=Follow&on)](https://twitter.com/Ken_Mwaura1)
 
 This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes.
 
