@@ -1,9 +1,10 @@
 import os
 
-from sqlalchemy import (Column, DateTime, Integer, String, Table, create_engine, MetaData)
+from sqlalchemy import (Boolean,Column, DateTime, Integer, String, Table, create_engine, MetaData)
 from sqlalchemy.sql import func
 from dotenv import load_dotenv
 from databases import Database
+from datetime import datetime as dt
 
 load_dotenv()
 # Database url if none is passed the default one is used
@@ -18,6 +19,7 @@ notes = Table(
     Column("id", Integer, primary_key=True),
     Column("title", String(50)),
     Column("description", String(50)),
+    Column("completed",String(8), default="False"),
     Column("created_date", DateTime, default=func.now(), nullable=False)
 )
 # Databases query builder
