@@ -13,12 +13,16 @@
           <tr>
               <th>Title</th>
               <th>Description</th>
+              <th>Completed</th>
+              <th>Created Date</th>
           </tr>
         </thead>
           <tbody> 
               <tr v-for="note in notes" :key="note.id">
                   <td>{{ note.title }}</td>
                   <td>{{ note.description }}</td>
+                  <td>{{ note.completed }}</td>
+                  <td> {{ note.created_date }}</td>
               </tr>
           </tbody>
       </table>

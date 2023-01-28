@@ -3,7 +3,8 @@ from app.db import notes, database
 
 
 async def post(payload: NoteSchema):
-    query = notes.insert().values(title=payload.title, description=payload.description)
+    query = notes.insert().values(title=payload.title, 
+    description=payload.description, completed=payload.completed, created_date=payload.created_date)
     return await database.execute(query=query)
 
 async def get(id: int):
@@ -18,7 +19,8 @@ async def get_all():
 
 async def put(id:int, payload=NoteSchema):
     query = (
-        notes.update().where(id == notes.c.id).values(title=payload.title, description=payload.description)
+        notes.update().where(id == notes.c.id).values(title=payload.title, 
+        description=payload.description, completed=payload.completed, created_date=payload.created_date)
         .returning(notes.c.id)
     )
     return await database.execute(query=query)
