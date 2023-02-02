@@ -32,7 +32,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/hello-fastapi
           tags: latest
-          dockerfile: ./src/Dockerfile
+          run: | 
+            cd src
+          dockerfile: Dockerfile
           add_git_labels: true
           cache_froms: ${{ secrets.DOCKER_USERNAME }}/hello-fastapi:latest
           cache_to: type=inline
