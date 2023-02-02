@@ -13,7 +13,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://hello_fastapi:hello_fastapi@db/hello_fastapi_dev
   db:
-    image: postgres:12.1-alpine
+    image: postgres:13.1-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
