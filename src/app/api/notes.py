@@ -1,19 +1,22 @@
 from app.api import crud
 from app.api.models import NoteDB, NoteSchema
-from fastapi import APIRouter, HTTPException, Path, FastAPI
+from fastapi import APIRouter, HTTPException, Path
 from typing import List 
-
+from datetime import datetime as dt
 router = APIRouter()
 
 
 @router.post("/", response_model=NoteDB, status_code=201)
 async def create_note(payload: NoteSchema):
     note_id = await crud.post(payload)
+    created_date = dt.now().strftime("%Y-%m-%d %H:%M")
 
     response_object = {
         "id": note_id,
         "title": payload.title,
         "description": payload.description,
+        "completed": payload.completed,
+        "created_date": created_date,
     }
     return response_object
     
@@ -37,7 +40,8 @@ async def update_note(payload:NoteSchema,id:int=Path(...,gt=0)): #Ensures the in
     response_object = {
         "id": note_id,
         "title": payload.title,
-        "description": payload.description
+        "description": payload.description,
+        "completed": payload.completed,
     }
     return response_object
 
