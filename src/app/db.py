@@ -1,7 +1,6 @@
 import os
 
-from sqlalchemy import (Boolean,Column, DateTime, Integer, String, Table, create_engine, MetaData)
-from sqlalchemy.sql import func
+from sqlalchemy import (Column, Integer, String, Table, create_engine, MetaData)
 from dotenv import load_dotenv
 from databases import Database
 from datetime import datetime as dt
