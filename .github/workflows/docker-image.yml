@@ -23,7 +23,7 @@ jobs:
       - name: Build the stack
         run: docker-compose up -d
       - uses: actions/checkout@v2
-      - name: Build the stack
+      - name: Build the stack 
         run: docker-compose up -d
       - name: Build and push Docker image
         uses: docker/build-push-action@v1
