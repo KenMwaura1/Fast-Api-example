@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/hello-fastapi
           tags: latest
-          dockerfile: Dockerfile
+          dockerfile: docker-compose.yml
           add_git_labels: true
           cache_froms: ${{ secrets.DOCKER_USERNAME }}/hello-fastapi:latest
           cache_to: type=inline
