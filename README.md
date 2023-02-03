@@ -9,6 +9,10 @@ This repository contains code for asynchronous example api using the [Fast Api f
 
 ![Fast-api](images/fast-api-scrnsht.png)
 
+## Accompanying Article
+
+Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515) 
+
 ## Installation method 1 (Run application locally)
 
 1. Clone this Repo
