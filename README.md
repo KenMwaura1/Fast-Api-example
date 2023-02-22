@@ -130,3 +130,21 @@ Run them using `pytest .` while in the root directory (/Fast-Api-example)
 ## Documentation
 
 Open API Documentation is provided by [Redoc](http://localhost:8002/redoc)
+
+## Contributing
+
+Contributions are welcome, please open an issue or submit a PR.
+
+## Github Actions
+
+Github actions are used to run tests and build the docker image. The docker image is pushed to [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example). Inorder to effectively use the actions you will need to add the following secrets to your repository settings. `DOCKER_USERNAME` and `DOCKER_PASSWORD` for the docker hub account.
+This is to enable the docker login step in the workflow and push the image to the docker hub repository. 
+
+## Docker Hub
+
+The docker image is available on [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
