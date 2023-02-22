@@ -138,7 +138,11 @@ Contributions are welcome, please open an issue or submit a PR.
 ## Github Actions
 
 Github actions are used to run tests and build the docker image. The docker image is pushed to [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example). Inorder to effectively use the actions you will need to add the following secrets to your repository settings. `DOCKER_USERNAME` and `DOCKER_PASSWORD` for the docker hub account.
-This is to enable the docker login step in the workflow and push the image to the docker hub repository. 
+This is to enable the docker login step in the workflow and push the image to the docker hub repository. Alternatively you can remove the step from the workflow by commenting it out.
+
+It is also possible to use [Github Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-docker-registry) to store the docker image. In this case you will need to add the following secrets to your repository settings. `CR_PAT` and `CR_USERNAME` for the github packages account. In our case the username is the github username. The `CR_PAT` is a personal access token with the `write:packages` scope. This is to enable the docker login step in the workflow and push the image to the github packages repository. Alternatively you can remove the step from the workflow by commenting it out.
+
+The docker image is also tagged with the commit sha and pushed to the docker hub repository. This is to enable the image to be pulled by the docker-compose file in the root directory. The docker-compose file is used to spin up the containers locally. It is available on [Github Packages](https://github.com/KenMwaura1/Fast-Api-example/pkgs/container/fast-api-example) as well.
 
 ## Docker Hub
 
