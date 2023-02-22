@@ -1,4 +1,4 @@
-anyio==3.3.4
+anyio==3.6.2
 asgiref==3.4.1
 astroid==2.8.4
 asyncpg==0.24.0
@@ -8,7 +8,7 @@ chardet==4.0.0
 charset-normalizer==2.0.7
 click==8.0.3
 databases==0.5.3
-fastapi==0.70.0
+fastapi==0.92.0
 greenlet==1.1.2
 h11==0.12.0
 httptools==0.3.0

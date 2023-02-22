@@ -7,6 +7,7 @@ export PORT=${PORT:-8001}
 # Activate the virtual environment
 source venv/bin/activate
 
+
 # The program is run with the following command:
 exec uvicorn --reload --host "$HOST" --port "$PORT" "$APP_MODULE"
 
