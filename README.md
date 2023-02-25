@@ -11,7 +11,7 @@ This repository contains code for asynchronous example api using the [Fast Api f
 
 ## Accompanying Article
 
-Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515) 
+Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515)
 
 ## Installation method 1 (Run application locally)
 
@@ -45,9 +45,18 @@ Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fa
 6. Install the required packages
 
    `python -m pip install -r requirements.txt`
-7. Start the app using Uvicorn
+7. Start the app
 
-   `uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8002`
+   ```shell
+   python main.py
+   ```
+
+   7b. Start the app using Uvicorn
+
+   ```shell
+   uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8002
+   ```
+
 8. Ensure you have a Postgres Database running locally.
    Additionally create a `fast_api_dev` database with user `**fast_api**` having required privileges.
    OR
@@ -147,7 +156,6 @@ The docker image is also tagged with the commit sha and pushed to the docker hub
 ## Docker Hub
 
 The docker image is available on [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example)
-
 
 ## License
 
