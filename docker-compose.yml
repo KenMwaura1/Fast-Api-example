@@ -26,6 +26,6 @@ volumes:
 
 networks:
   default: 
-    external:
-      name: hello_fastapi
+    name: hello_fastapi
+
 
