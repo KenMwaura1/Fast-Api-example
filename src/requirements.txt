@@ -8,7 +8,7 @@ chardet==4.0.0
 charset-normalizer==2.0.7
 click==8.0.3
 databases==0.5.3
-fastapi==0.92.0
+fastapi==0.95.2
 greenlet==1.1.2
 h11==0.14.0
 httpcore==0.17.0
@@ -35,7 +35,7 @@ requests==2.31.0
 six==1.16.0
 sniffio==1.2.0
 SQLAlchemy==1.4.26
-starlette==0.25.0
+starlette==0.27.0
 toml==0.10.2
 typing-extensions==3.10.0.2
 urllib3==1.26.7
