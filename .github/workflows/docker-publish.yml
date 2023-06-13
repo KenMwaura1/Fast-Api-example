@@ -4,11 +4,11 @@ on:
   schedule:
     - cron: '38 8 * * *'
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev"]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -82,14 +82,12 @@ jobs:
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
-        id: Image Sign
+        id: Image_Sign
         if: github.event_name != 'pull_request'
         run: |
-            # This step uses the identity token to provision an ephemeral certificate
-            # against the sigstore community Fulcio instance.
+          # This step uses the identity token to provision an ephemeral certificate
+          # against the sigstore community Fulcio instance.
             echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-       
-           COSIGN_EXPERIMENTAL: "true"
-         # This step uses the identity token to provision an ephemeral certificate
-         # against the sigstore community Fulcio instance.
-         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+            COSIGN_EXPERIMENTAL: "true"
+            COSIGN_REPOSITORY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            
