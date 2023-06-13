@@ -1,14 +1,14 @@
-name: Docker
+name: Docker Image Publish
 
 on:
   schedule:
     - cron: '38 8 * * *'
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev"]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -76,20 +76,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        id: Image Sign
-        if: github.event_name != 'pull_request'
-        run: |
-            # This step uses the identity token to provision an ephemeral certificate
-            # against the sigstore community Fulcio instance.
-            echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-       
-           COSIGN_EXPERIMENTAL: "true"
-         # This step uses the identity token to provision an ephemeral certificate
-         # against the sigstore community Fulcio instance.
-         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
