@@ -51,6 +51,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       
       - name: Build and push Docker image
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:src"
