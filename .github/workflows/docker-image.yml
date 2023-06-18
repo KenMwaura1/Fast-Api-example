@@ -61,6 +61,7 @@ jobs:
               ${{ runner.os }}-buildx-
 
       - name: Build and push Docker image
+        if : github.event_name != 'pull_request'
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:src"
