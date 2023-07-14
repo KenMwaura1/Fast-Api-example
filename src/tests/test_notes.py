@@ -1,9 +1,5 @@
 import json
 import pytest
-from fastapi.testclient import TestClient
-from app.main import app
-from app.db import notes, database
-from app.api.models import NoteSchema
 from datetime import datetime as dt
 from app.api import crud
 

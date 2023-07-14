@@ -1,5 +1,5 @@
 
-from pydantic import BaseModel, Field, NonNegativeInt
+from pydantic import BaseModel, Field
 from datetime import datetime as dt
 from pytz import timezone as tz
 
