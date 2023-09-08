@@ -3,7 +3,7 @@ name: SMS Notification
 
 on:
   workflow_run:
-    workflows: ["Python Application Test", "Docker Image Publish", "Docker Compose Actions Workflow"]
+    workflows: [ "Docker Image Publish"]
     branches: [dev, main]
     types:
       - completed
@@ -19,7 +19,7 @@ jobs:
   - uses: actions/checkout@v3
 
   - name: SMS Notification
-    if: ${{ github.event.workflow_run.conclusion == 'failure' || github.event.workflow_run.conclusion == 'cancelled' }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     uses: alphaolomi/actions-africastalking@main
     with:
       fromPhoneNumber: 'INFO'   # or  ${{ secrets.fromPhoneNumber }}
