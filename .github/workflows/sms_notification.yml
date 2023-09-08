@@ -3,7 +3,7 @@ name: SMS Notification
 
 on:
   workflow_run:
-    workflows: [ "Docker Image Publish"]
+    workflows: [ "Docker Image Publish", "Docker Compose Actions Workflow"]
     branches: [dev, main]
     types:
       - completed
