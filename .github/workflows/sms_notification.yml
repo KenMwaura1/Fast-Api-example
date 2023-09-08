@@ -1,0 +1,35 @@
+name: SMS Notification 
+
+
+on:
+  workflow_run:
+    workflows: ["Docker Image Publish", "Docker Compose Actions Workflow"]
+    branches: [dev, main]
+    types:
+      - completed
+
+  workflow_dispatch:
+
+jobs:
+
+ build:
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v3
+
+  - name: SMS Notification
+    if: ${{failure() || cancelled()}}
+    uses: alphaolomi/actions-africastalking@main
+    with:
+      fromPhoneNumber: 'INFO'   # or  ${{ secrets.fromPhoneNumber }}
+      toPhoneNumber: ${{ secrets.toPhoneNumber }}
+      message: ${{ github.event_name }} on ${{ github.repository }} by ${{ github.actor }} failed or cancelled. Check it out at ${{ github.event.head_commit.url }}
+    env:
+      AT_API_KEY: ${{ secrets.AT_API_KEY }}
+      AT_USERNAME: ${{ secrets.AT_USERNAME }}
+
+
+
+
+      
