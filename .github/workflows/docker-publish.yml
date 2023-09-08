@@ -36,7 +36,7 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v2.6.0
+        uses: sigstore/cosign-installer #v2.6.0
         with:
           cosign-release: 'v1.11.0'
 
@@ -53,7 +53,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKE }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
