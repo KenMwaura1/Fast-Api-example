@@ -37,7 +37,7 @@ jobs:
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           # Version of PostgreSQL to use
-          postgresql version: 12.1-alpine
+          postgresql version: 13.1-alpine
           # POSTGRES_DB - name for the default database that is created
           postgresql db: hello_fastapi_dev
           # POSTGRES_USER - create the specified user with superuser power
