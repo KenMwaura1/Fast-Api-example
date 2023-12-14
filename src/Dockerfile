@@ -1,24 +1,23 @@
-# pull official base image
-FROM python:3.9.1-alpine
+# Use a smaller base image
+FROM python:3.9.1-slim
 
-# set work directory
+# Set work directory
 WORKDIR /usr/src/app
 
-# set environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# copy requirements file
-COPY ./requirements.txt /usr/src/app/requirements.txt
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev libpq-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# install dependencies
-RUN set -eux \
-    && apk add --no-cache --virtual .build-deps build-base \
-    libressl-dev libffi-dev gcc musl-dev python3-dev \
-    postgresql-dev \
-    && pip install --upgrade pip setuptools wheel \
-    && pip install -r /usr/src/app/requirements.txt \
-    && rm -rf /root/.cache/pip
+# Copy and install Python dependencies
+COPY requirements.txt /usr/src/app/
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt && \
+    rm -rf /root/.cache/pip
 
-# copy project
+# Copy project files
 COPY . /usr/src/app/
