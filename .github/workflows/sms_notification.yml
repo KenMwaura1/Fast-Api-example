@@ -28,8 +28,3 @@ jobs:
     env:
       AT_API_KEY: ${{ secrets.AT_API_KEY }}
       AT_USERNAME: ${{ secrets.AT_USERNAME }}
-
-
-
-
-      
