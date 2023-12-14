@@ -8,6 +8,7 @@ databases[postgresql]
 fastapi
 h11
 httptools
+httpx
 idna
 isort
 lazy-object-proxy
@@ -15,10 +16,13 @@ mccabe
 more-itertools
 packaging
 pluggy
+psycopg2-binary
 py
 pydantic
 pylint
-pyparsing 
+pyparsing
+python-dotenv
+pytz=
 six
 SQLAlchemy
 starlette
@@ -29,7 +33,6 @@ wcwidth
 websockets
 wrapt
 
-#dev 
+#dev
 pytest
 requests
-
