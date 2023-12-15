@@ -1,13 +1,23 @@
 #!/bin/sh
 
-export APP_MODULE=${APP_MODULE-src.main:app}
-export HOST=${HOST:-0.0.0.0}
-export PORT=${PORT:-8001}
+# Set default values
+APP_MODULE=${APP_MODULE:-src.main:app}
+HOST=${HOST:-0.0.0.0}
+PORT=${PORT:-8001}
 
-# Activate the virtual environment
-source venv/bin/activate
+# Activate virtualenv in subshell for isolation
+(
+  # shellcheck disable=SC2039
+  source venv/bin/activate
 
-# The program is run with the following command:
-exec uvicorn --reload --host "$HOST" --port "$PORT" "$APP_MODULE"
+  # Run app in background for auto-restart
+  uvicorn --reload --host "$HOST" --port "$PORT" "$APP_MODULE" &
+)
+
+# Trap signals to gracefully shutdown child process
+trap 'kill %1' INT TERM EXIT
+
+# Wait for child process
+wait
 
 # uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8003
