@@ -194,3 +194,60 @@ def test_read_all_completed_notes(test_app, monkeypatch):
     assert response.status_code == 200
     assert response.json() == test_data
 
+
+def test_read_all_not_completed_notes(test_app, monkeypatch):
+    test_data = [{"title": "Test", "description": "something else", "id": 1, "completed": "False",
+                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
+                 {"title": "something", "description": "something else", "id": 2, "completed": "False",
+                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
+
+    async def mock_get_not_completed():
+        return test_data
+
+    monkeypatch.setattr(crud, "get_not_completed", mock_get_not_completed)
+
+    response = test_app.get("/notes/not_completed/{not_completed}")
+    assert response.status_code == 200
+    assert response.json() == test_data
+
+
+def test_read_note_by_description(test_app, monkeypatch):
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
+
+    async def mock_get_by_description(description):
+        return test_data
+
+    monkeypatch.setattr(crud, "get_by_description", mock_get_by_description)
+
+    response = test_app.get("/notes/description/something else/")
+    assert response.status_code == 200
+    assert response.json() == test_data
+
+
+def test_read_note_by_date(test_app, monkeypatch):
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
+
+    async def mock_get_by_date(created_date):
+        return test_data
+
+    monkeypatch.setattr(crud, "get_by_date", mock_get_by_date)
+
+    response = test_app.get("/notes/date/2021-06-17 18:00/")
+    assert response.status_code == 200
+    assert response.json() == test_data
+
+
+def test_read_note_by_date_invalid(test_app, monkeypatch):
+    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
+                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
+
+    async def mock_get_by_date(created_date):
+        return test_data
+
+    monkeypatch.setattr(crud, "get_by_date", mock_get_by_date)
+
+    response = test_app.get("/notes/date/2021-06-17 18:00:00/")
+    assert response.status_code == 200
+
