@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 
 from app.api import notes, ping
 from app.db import engine, metadata, database
@@ -24,16 +25,15 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-async def startup():
-    print("Starting up...")
-    await database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    print("Shutting down...")
-    await database.disconnect()
+@asynccontextmanager
+async def db():
+    try:
+        print("Starting up...")
+        await database.connect()
+        yield
+    finally:
+        print("Shutting down...")
+        await database.disconnect()
 
 
 app.include_router(ping.router)
