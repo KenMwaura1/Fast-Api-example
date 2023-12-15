@@ -26,11 +26,13 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup():
+    print("Starting up...")
     await database.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    print("Shutting down...")
     await database.disconnect()
 
 
