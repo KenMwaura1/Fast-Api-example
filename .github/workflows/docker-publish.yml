@@ -36,7 +36,7 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.3.0
+        uses: sigstore/cosign-installer@v3.6.0
         with:
           cosign-release: 'v2.1.1'
 
@@ -68,7 +68,7 @@ jobs:
       - name: Build and push Docker image
         if : github.event_name != 'pull_request'
         id: build-and-push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:src"
           push: ${{ github.event_name != 'pull_request' }} # Don't push on PR

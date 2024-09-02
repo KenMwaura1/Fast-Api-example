@@ -21,13 +21,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker-compose build --no-cache --force-rm 
+      run: docker compose build --no-cache --force-rm 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Test the Docker image
-        run: docker-compose up -d 
+        run: docker compose up -d 
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       
       - name: Cache Docker layers
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -62,7 +62,7 @@ jobs:
 
       - name: Build and push Docker image
         if : github.event_name != 'pull_request'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:src"
           push: true
