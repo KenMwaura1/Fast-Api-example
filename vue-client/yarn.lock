@@ -360,10 +360,10 @@ sourcemap-codec@^1.4.8:
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
-vite@^4.5.6:
-  version "4.5.6"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.5.6.tgz#48bbd97fe06e8241df2e625b31c581707e10b57d"
-  integrity sha512-ElBNuVvJKslxcfY2gMmae5IjaKGqCYGicCNZ+8R56sAznobeE3pI9ctzI17cBS/6OJh5YuQNMSN4BP4dRjugBg==
+vite@^4.5.13:
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.5.13.tgz#778534a947112c6c455e89737730fae5d458a294"
+  integrity sha512-Hgp8IF/yZDzKsN1hQWOuQZbrKiaFsbQud+07jJ8h9m9PaHWkpvZ5u55Xw5yYjWRXwRQ4jwFlJvY7T7FUJG9MCA==
   dependencies:
     esbuild "^0.18.10"
     postcss "^8.4.27"
