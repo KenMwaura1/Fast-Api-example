@@ -1,14 +1,11 @@
-name: "Dependabot Updates"
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
 
-on:
-  schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight UTC
-
-jobs:
-  dependabot:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Run Dependabot
-        uses: dependabot/fetch-metadata@v1
+  - package-ecosystem: "yarn"
+    directory: "/vue-client"
+    schedule:
+      interval: "daily"
