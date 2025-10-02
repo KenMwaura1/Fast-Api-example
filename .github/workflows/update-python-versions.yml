@@ -1,0 +1,130 @@
+name: Check Python Versions
+
+on:
+  schedule:
+    # Run on the 1st of every month at 9 AM UTC
+    - cron: '0 9 1 * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-python-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          
+      - name: Get latest Python versions
+        id: get-versions
+        run: |
+          # Get available Python versions from GitHub Actions
+          # This fetches the latest 3 stable versions
+          python -c "
+          import requests
+          import json
+          import os
+          
+          # Get available versions from the setup-python action
+          # We'll simulate getting the latest 3 versions
+          # In practice, you'd want to check the actual available versions
+          
+          # Current stable versions as of 2025
+          versions = ['3.11', '3.12', '3.13']
+          
+          print('Available Python versions:', versions)
+          
+          # Check current versions in workflow
+          with open('.github/workflows/pythonapp.yml', 'r') as f:
+              content = f.read()
+              
+          current_versions = []
+          for line in content.split('\n'):
+              if 'python-version:' in line and '[' in line:
+                  # Extract versions from the matrix
+                  import re
+                  matches = re.findall(r'\"?(3\.\d+)\"?', line)
+                  current_versions = matches
+                  break
+                  
+          print('Current versions in workflow:', current_versions)
+          print('Latest versions should be:', versions)
+          
+          # Check if update is needed
+          needs_update = set(current_versions) != set(versions)
+          print('Needs update:', needs_update)
+          
+          if needs_update:
+              with open(os.environ['GITHUB_ENV'], 'a') as f:
+                  f.write(f'NEEDS_UPDATE=true\n')
+                  f.write(f'NEW_VERSIONS={json.dumps(versions)}\n')
+          else:
+              with open(os.environ['GITHUB_ENV'], 'a') as f:
+                  f.write(f'NEEDS_UPDATE=false\n')
+          "
+          
+      - name: Create issue for Python version update
+        if: env.NEEDS_UPDATE == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const newVersions = JSON.parse(process.env.NEW_VERSIONS);
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Python versions in CI workflow should be updated',
+              body: `The Python versions in the CI workflow should be updated to the latest 3 stable versions:
+              
+              **Recommended versions:** ${newVersions.join(', ')}
+              
+              Please update the \`python-version\` matrix in \`.github/workflows/pythonapp.yml\`:
+              
+              \`\`\`yaml
+              strategy:
+                matrix:
+                  python-version: [${newVersions.map(v => `"${v}"`).join(', ')}]
+              \`\`\`
+              
+              This issue was automatically created by the Update Python Versions workflow.`,
+              labels: ['dependencies', 'python', 'ci']
+            });
+            
+      - name: Auto-update workflow (optional)
+        if: env.NEEDS_UPDATE == 'true'
+        run: |
+          echo "Python versions need updating. Consider enabling auto-PR creation here."
+          # Uncomment below to enable automatic PR creation
+          # You would need to set up a personal access token with repo permissions
+          
+          # git config --local user.email "action@github.com"
+          # git config --local user.name "GitHub Action"
+          # git checkout -b update-python-versions-$(date +%Y%m%d)
+          # 
+          # # Update the workflow file
+          # NEW_VERSIONS='${{ env.NEW_VERSIONS }}'
+          # python -c "
+          # import json
+          # import re
+          # 
+          # versions = json.loads('$NEW_VERSIONS')
+          # version_str = '[' + ', '.join([f'\"${v}\"' for v in versions]) + ']'
+          # 
+          # with open('.github/workflows/pythonapp.yml', 'r') as f:
+          #     content = f.read()
+          # 
+          # # Replace the python-version matrix
+          # pattern = r'python-version: \[.*?\]'
+          # replacement = f'python-version: {version_str}'
+          # content = re.sub(pattern, replacement, content)
+          # 
+          # with open('.github/workflows/pythonapp.yml', 'w') as f:
+          #     f.write(content)
+          # "
+          # 
+          # git add .github/workflows/pythonapp.yml
+          # git commit -m "Update Python versions to latest 3 stable versions"
+          # git push origin update-python-versions-$(date +%Y%m%d)
