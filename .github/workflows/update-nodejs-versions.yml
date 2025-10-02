@@ -30,7 +30,7 @@ jobs:
           
       - name: Create issue if versions are outdated
         if: steps.check-versions.outputs.outdated == 'true'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           script: |
             github.rest.issues.create({
