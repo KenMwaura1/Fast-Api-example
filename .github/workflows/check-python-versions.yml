@@ -1,0 +1,86 @@
+name: Check Python Versions
+
+on:
+  schedule:
+    # Run on the 1st of every month at 9 AM UTC
+    - cron: '0 9 1 * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-python-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      needs-update: ${{ steps.check.outputs.needs-update }}
+      new-versions: ${{ steps.check.outputs.new-versions }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Check Python versions
+        id: check
+        run: |
+          # Define LTS and latest stable Python versions
+          LATEST_VERSIONS=("3.10" "3.11" "3.12" "3.13")
+          
+          echo "Latest Python versions: ${LATEST_VERSIONS[*]}"
+          
+          # Extract current versions from workflow
+          CURRENT_VERSIONS=$(grep -o '"3\.[0-9]\+"\|3\.[0-9]\+' .github/workflows/pythonapp.yml | grep -o '3\.[0-9]\+' | sort -u | tr '\n' ' ')
+          echo "Current versions in workflow: $CURRENT_VERSIONS"
+          
+          # Check if update is needed by comparing arrays
+          NEEDS_UPDATE=false
+          for version in "${LATEST_VERSIONS[@]}"; do
+            if ! echo "$CURRENT_VERSIONS" | grep -q "$version"; then
+              NEEDS_UPDATE=true
+              break
+            fi
+          done
+          
+          # Also check if we have extra old versions
+          for version in $CURRENT_VERSIONS; do
+            if [[ ! " ${LATEST_VERSIONS[*]} " =~ " $version " ]]; then
+              NEEDS_UPDATE=true
+              break
+            fi
+          done
+          
+          if [ "$NEEDS_UPDATE" = "true" ]; then
+            echo "needs-update=true" >> $GITHUB_OUTPUT
+            echo "new-versions=[\"${LATEST_VERSIONS[0]}\", \"${LATEST_VERSIONS[1]}\", \"${LATEST_VERSIONS[2]}\", \"${LATEST_VERSIONS[3]}\"]" >> $GITHUB_OUTPUT
+            echo "Update needed!"
+          else
+            echo "needs-update=false" >> $GITHUB_OUTPUT
+            echo "Versions are up to date"
+          fi
+          
+  create-issue:
+    needs: check-python-versions
+    if: needs.check-python-versions.outputs.needs-update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create issue for Python version update
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const newVersions = ${{ needs.check-python-versions.outputs.new-versions }};
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Python versions in CI workflow should be updated',
+              body: `The Python versions in the CI workflow should be updated to the latest 3 stable versions:
+              
+              **Recommended versions:** ${newVersions.join(', ')}
+              
+              Please update the \`python-version\` matrix in \`.github/workflows/pythonapp.yml\`:
+              
+              \`\`\`yaml
+              strategy:
+                matrix:
+                  python-version: ${JSON.stringify(newVersions)}
+              \`\`\`
+              
+              This issue was automatically created by the Check Python Versions workflow.`,
+              labels: ['dependencies', 'python', 'ci']
+            });
