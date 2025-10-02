@@ -1,0 +1,41 @@
+name: Update Node.js Versions
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-nodejs-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          
+      - name: Check current Node.js LTS versions
+        id: check-versions
+        run: |
+          # Get current LTS versions
+          CURRENT_LTS=$(node -e "console.log(process.version)")
+          echo "current-lts=$CURRENT_LTS" >> $GITHUB_OUTPUT
+          
+          # You could add logic here to compare with versions in your workflow
+          # and create a PR if they're outdated
+          
+      - name: Create issue if versions are outdated
+        if: steps.check-versions.outputs.outdated == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Node.js versions in CI workflow may be outdated',
+              body: 'The Node.js versions used in the CI workflow should be updated. Current LTS: ${{ steps.check-versions.outputs.current-lts }}'
+            })
