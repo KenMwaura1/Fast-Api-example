@@ -14,7 +14,7 @@ jobs:
       new-versions: ${{ steps.check.outputs.new-versions }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         
       - name: Check Python versions
         id: check
