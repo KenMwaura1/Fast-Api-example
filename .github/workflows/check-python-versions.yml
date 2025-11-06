@@ -14,7 +14,7 @@ jobs:
       new-versions: ${{ steps.check.outputs.new-versions }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         
       - name: Check Python versions
         id: check
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create issue for Python version update
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const newVersions = ${{ needs.check-python-versions.outputs.new-versions }};
