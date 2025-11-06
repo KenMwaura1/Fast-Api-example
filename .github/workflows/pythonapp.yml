@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
-        # Including Python 3.10 (LTS until 2026) and latest stable versions
+        python-version: ["3.10","3.11","3.12","3.13"]
         # GitHub Actions automatically gets the latest patch versions
 
     steps:
