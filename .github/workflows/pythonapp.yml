@@ -11,6 +11,20 @@ jobs:
   build:
   
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13.1-alpine
+        env:
+          POSTGRES_DB: hello_fastapi_dev
+          POSTGRES_USER: hello_fastapi
+          POSTGRES_PASSWORD: hello_fastapi
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     strategy:
       matrix:
         python-version: ["3.10","3.11","3.12","3.13"]
@@ -34,17 +48,15 @@ jobs:
             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Setup PostgreSQL
-        uses: Harmon758/postgresql-action@v1.0.0
-        with:
-          # Version of PostgreSQL to use
-          postgresql version: 13.1-alpine
-          # POSTGRES_DB - name for the default database that is created
-          postgresql db: hello_fastapi_dev
-          # POSTGRES_USER - create the specified user with superuser power
-          postgresql user: hello_fastapi
-          # POSTGRES_PASSWORD - superuser password
-          postgresql password: hello_fastapi
+
+      - name: Wait for Postgres
+        run: |
+          # Wait for the postgres service to be ready
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 && exit 0 || sleep 2
+          done
+          echo "Postgres did not become ready in time" && exit 1
+
       - name: Test with pytest
         run: |
           pip install pytest
