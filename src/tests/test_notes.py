@@ -94,20 +94,57 @@ def test_read_note_incorrect_id(test_app, monkeypatch):
     assert response.status_code == 422
 
 
-def test_read_all_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
-                  "created_date": get_iso_date()},
-                 {"title": "something", "description": "something else", "id": 2, "completed": False,
-                  "created_date": get_iso_date()}]
+def test_read_notes_pagination(test_app, monkeypatch):
+    test_data = [
+        {"title": "note 1", "description": "desc 1", "id": 1, "completed": False, "created_date": get_iso_date()},
+        {"title": "note 2", "description": "desc 2", "id": 2, "completed": False, "created_date": get_iso_date()}
+    ]
 
-    async def mock_get_all():
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
         return test_data
 
-    monkeypatch.setattr(crud, "get_all", mock_get_all)
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
 
-    response = test_app.get("/notes/")
+    response = test_app.get("/notes/?skip=0&limit=2")
     assert response.status_code == 200
+    assert len(response.json()) == 2
     assert response.json() == test_data
+
+
+def test_read_notes_filter(test_app, monkeypatch):
+    test_data = [
+        {"title": "note 1", "description": "desc 1", "id": 1, "completed": True, "created_date": get_iso_date()}
+    ]
+
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        if completed:
+            return test_data
+        return []
+
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
+
+    response = test_app.get("/notes/?completed=true")
+    assert response.status_code == 200
+    assert len(response.json()) == 1
+    assert response.json()[0]["completed"] is True
+
+
+def test_read_notes_search(test_app, monkeypatch):
+    test_data = [
+        {"title": "unique", "description": "desc 1", "id": 1, "completed": False, "created_date": get_iso_date()}
+    ]
+
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        if search == "unique":
+            return test_data
+        return []
+
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
+
+    response = test_app.get("/notes/?search=unique")
+    assert response.status_code == 200
+    assert len(response.json()) == 1
+    assert response.json()[0]["title"] == "unique"
 
 
 @pytest.mark.parametrize(
@@ -167,64 +204,4 @@ def test_remove_note_incorrect_id(test_app, monkeypatch):
 def test_remove_note_invalid_id(test_app, monkeypatch):
     response = test_app.delete("/notes/one/")
     assert response.status_code == 422
-
-
-def test_read_note_by_title(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
-                  "created_date": get_iso_date()}]
-
-    async def mock_get_by_title(title):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_title", mock_get_by_title)
-
-    response = test_app.get("/notes/title/something/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_all_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": True,
-                  "created_date": get_iso_date()},
-                 {"title": "something", "description": "something else", "id": 2, "completed": True,
-                  "created_date": get_iso_date()}]
-
-    async def mock_get_completed():
-        return test_data
-
-    monkeypatch.setattr(crud, "get_completed", mock_get_completed)
-
-    response = test_app.get("/notes/completed/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_all_not_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "Test", "description": "something else", "id": 1, "completed": False,
-                  "created_date": get_iso_date()},
-                 {"title": "something", "description": "something else", "id": 2, "completed": False,
-                  "created_date": get_iso_date()}]
-
-    async def mock_get_not_completed():
-        return test_data
-
-    monkeypatch.setattr(crud, "get_not_completed", mock_get_not_completed)
-
-    response = test_app.get("/notes/not_completed/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_note_by_description(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": False,
-                  "created_date": get_iso_date()}]
-
-    async def mock_get_by_description(description):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_description", mock_get_by_description)
-
-    response = test_app.get("/notes/description/something else/")
-    assert response.status_code == 200
-    assert response.json() == test_data
 
