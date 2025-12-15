@@ -5,9 +5,17 @@ from contextlib import asynccontextmanager
 from app.api import notes, ping
 from app.db import engine, metadata, database
 
-metadata.create_all(engine)
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Starting up...")
+    metadata.create_all(engine)
+    await database.connect()
+    yield
+    print("Shutting down...")
+    await database.disconnect()
+
+app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost",
@@ -23,18 +31,6 @@ app.add_middleware(
     allow_methods=["DELETE", "GET", "POST", "PUT"],
     allow_headers=["*"],
 )
-
-
-@asynccontextmanager
-async def db():
-    try:
-        print("Starting up...")
-        await database.connect()
-        yield
-    finally:
-        print("Shutting down...")
-        await database.disconnect()
-
 
 app.include_router(ping.router)
 app.include_router(notes.router, prefix="/notes", tags=["notes"])
