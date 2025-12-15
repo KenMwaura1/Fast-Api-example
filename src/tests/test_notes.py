@@ -147,6 +147,25 @@ def test_read_notes_search(test_app, monkeypatch):
     assert response.json()[0]["title"] == "unique"
 
 
+def test_update_note(test_app, monkeypatch):
+    test_update_data = {"title": "something", "description": "something else", "completed": True}
+    test_response_payload = {"id": 1, "title": "something", "description": "something else", "completed": True,
+                             "created_date": get_iso_date()}
+
+    async def mock_get(id):
+        return test_response_payload
+
+    async def mock_put(id, payload):
+        return 1
+
+    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "put", mock_put)
+
+    response = test_app.put("/notes/1/", content=json.dumps(test_update_data))
+    assert response.status_code == 200
+    assert response.json() == test_response_payload
+
+
 @pytest.mark.parametrize(
     "id, payload, status_code",
     [
