@@ -11,24 +11,10 @@ jobs:
   build:
   
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13.1-alpine
-        env:
-          POSTGRES_DB: hello_fastapi_dev
-          POSTGRES_USER: hello_fastapi
-          POSTGRES_PASSWORD: hello_fastapi
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+    
     strategy:
       matrix:
         python-version: ["3.10","3.11","3.12","3.13"]
-        # GitHub Actions automatically gets the latest patch versions
 
     steps:
       - uses: actions/checkout@v6
@@ -49,15 +35,8 @@ jobs:
             # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: Wait for Postgres
-        run: |
-          # Wait for the postgres service to be ready
-          for i in {1..30}; do
-            pg_isready -h localhost -p 5432 && exit 0 || sleep 2
-          done
-          echo "Postgres did not become ready in time" && exit 1
-
       - name: Test with pytest
         run: |
           pip install pytest
-          pytest .
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+          pytest src

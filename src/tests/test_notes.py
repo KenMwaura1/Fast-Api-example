@@ -1,68 +1,74 @@
 import json
 import pytest
-from datetime import datetime as dt
+from datetime import datetime
 from app.api import crud
 
 
-def get_current_datetime():
-    return dt.now().strftime("%Y-%m-%d %H:%M")
+def get_iso_date():
+    return datetime.now().isoformat()
 
 
 def test_create_note(test_app, monkeypatch):
-    payloads = {
-        "request": {
-            "title": "something",
-            "description": "something else",
-            "completed": "False",
-            "created_date": get_current_datetime()
-        },
-        "response": {
-            "id": 1,
-            "title": "something",
-            "description": "something else",
-            "completed": "False",
-            "created_date": get_current_datetime()
-        }
+    test_request_payload = {
+        "title": "something",
+        "description": "something else",
+        "completed": False
     }
-
-    test_request_payload = payloads["request"]
-
-    test_response_payload = payloads["response"]
+    test_response_payload = {
+        "id": 1,
+        "title": "something",
+        "description": "something else",
+        "completed": False,
+        "created_date": get_iso_date()
+    }
 
     async def mock_post(payload):
         return 1
+    
+    async def mock_get(id):
+        return test_response_payload
 
     monkeypatch.setattr(crud, "post", mock_post)
+    monkeypatch.setattr(crud, "get", mock_get)
 
-    response = test_app.post("/notes/", data=json.dumps(test_request_payload))
+    response = test_app.post("/notes/", content=json.dumps(test_request_payload))
     assert response.status_code == 201
     assert response.json() == test_response_payload
 
 
 @pytest.mark.parametrize(
-    "test_id, test_payload, expected_status",
+    "test_payload, expected_status",
     [
-        [1, {}, 422],
-        [1, {"description": "bar"}, 422],
-        [999, {"title": "foo", "description": "bar", "created_date": get_current_datetime(), "completed": "True"}, 201],
-        [1, {"title": "1", "description": "bar"}, 422],
-        [1, {"title": "foo", "description": "1"}, 422]
+        [{}, 422],
+        [{"description": "bar"}, 422],
+        [{"title": "foo", "description": "bar", "completed": True}, 201],
+        [{"title": "1", "description": "bar"}, 422],
+        [{"title": "foo", "description": "1"}, 422]
     ]
 )
-def test_create_note_invalid(test_app, monkeypatch, test_id, test_payload, expected_status):
+def test_create_note_invalid(test_app, monkeypatch, test_payload, expected_status):
     async def mock_post(payload):
         return 1
+    
+    async def mock_get(id):
+         return {
+            "id": 1,
+            "title": test_payload.get("title"),
+            "description": test_payload.get("description"),
+            "completed": test_payload.get("completed", False),
+            "created_date": get_iso_date()
+        }
 
     monkeypatch.setattr(crud, "post", mock_post)
+    monkeypatch.setattr(crud, "get", mock_get)
 
-    response = test_app.post("/notes/", data=json.dumps(test_payload))
+    response = test_app.post("/notes/", content=json.dumps(test_payload))
     assert response.status_code == expected_status
 
 
-# These tests should be run in order
 def test_read_note(test_app, monkeypatch):
-    test_data = {"title": "something", "description": "something else", "id": 1, "completed": "False",
-                 "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}
+    test_data = {"title": "something", "description": "something else", "id": 1, "completed": False,
+                 "created_date": get_iso_date()}
 
     async def mock_get(id):
         return test_data
@@ -88,20 +94,76 @@ def test_read_note_incorrect_id(test_app, monkeypatch):
     assert response.status_code == 422
 
 
-def read_all_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
+def test_read_notes_pagination(test_app, monkeypatch):
+    test_data = [
+        {"title": "note 1", "description": "desc 1", "id": 1, "completed": False, "created_date": get_iso_date()},
+        {"title": "note 2", "description": "desc 2", "id": 2, "completed": False, "created_date": get_iso_date()}
+    ]
 
-    async def mock_get_all():
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
         return test_data
 
-    monkeypatch.setattr(crud, "get_all", mock_get_all)
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
 
-    response = test_app.get("/notes/")
+    response = test_app.get("/notes/?skip=0&limit=2")
     assert response.status_code == 200
+    assert len(response.json()) == 2
     assert response.json() == test_data
+
+
+def test_read_notes_filter(test_app, monkeypatch):
+    test_data = [
+        {"title": "note 1", "description": "desc 1", "id": 1, "completed": True, "created_date": get_iso_date()}
+    ]
+
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        if completed:
+            return test_data
+        return []
+
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
+
+    response = test_app.get("/notes/?completed=true")
+    assert response.status_code == 200
+    assert len(response.json()) == 1
+    assert response.json()[0]["completed"] is True
+
+
+def test_read_notes_search(test_app, monkeypatch):
+    test_data = [
+        {"title": "unique", "description": "desc 1", "id": 1, "completed": False, "created_date": get_iso_date()}
+    ]
+
+    async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        if search == "unique":
+            return test_data
+        return []
+
+    monkeypatch.setattr(crud, "get_notes", mock_get_notes)
+
+    response = test_app.get("/notes/?search=unique")
+    assert response.status_code == 200
+    assert len(response.json()) == 1
+    assert response.json()[0]["title"] == "unique"
+
+
+def test_update_note(test_app, monkeypatch):
+    test_update_data = {"title": "something", "description": "something else", "completed": True}
+    test_response_payload = {"id": 1, "title": "something", "description": "something else", "completed": True,
+                             "created_date": get_iso_date()}
+
+    async def mock_get(id):
+        return test_response_payload
+
+    async def mock_put(id, payload):
+        return 1
+
+    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "put", mock_put)
+
+    response = test_app.put("/notes/1/", content=json.dumps(test_update_data))
+    assert response.status_code == 200
+    assert response.json() == test_response_payload
 
 
 @pytest.mark.parametrize(
@@ -109,8 +171,7 @@ def read_all_notes(test_app, monkeypatch):
     [
         [1, {}, 422],
         [1, {"description": "bar"}, 422],
-        [999, {"title": "foo", "description": "bar", "created_date": dt.now().strftime("%Y-%m-%d %H:%M"),
-               "completed": "True"}, 404],
+        [999, {"title": "foo", "description": "bar", "completed": True}, 404],
         [1, {"title": "1", "description": "bar"}, 422],
         [1, {"title": "foo", "description": "1"}, 422],
         [0, {"title": "foo", "description": "bar"}, 422],
@@ -118,18 +179,18 @@ def read_all_notes(test_app, monkeypatch):
 )
 def test_update_note_invalid(test_app, monkeypatch, id, payload, status_code):
     async def mock_get(id):
-        return None
+        if id == 999: return None
+        return {"id": id, "title": "existing", "description": "existing", "completed": False, "created_date": get_iso_date()}
 
     monkeypatch.setattr(crud, "get", mock_get)
 
-    response = test_app.put(f"/notes/{id}/", data=json.dumps(payload), )
+    response = test_app.put(f"/notes/{id}/", content=json.dumps(payload))
     assert response.status_code == status_code
 
 
-# Test for DELETE route
 def test_remove_note_200(test_app, monkeypatch):
-    test_data = {"title": "something", "description": "something else", "id": 1, "completed": "False",
-                 "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}
+    test_data = {"title": "something", "description": "something else", "id": 1, "completed": False,
+                 "created_date": get_iso_date()}
 
     async def mock_get(id):
         return test_data
@@ -162,92 +223,4 @@ def test_remove_note_incorrect_id(test_app, monkeypatch):
 def test_remove_note_invalid_id(test_app, monkeypatch):
     response = test_app.delete("/notes/one/")
     assert response.status_code == 422
-
-
-def test_read_note_by_title(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_by_title(title):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_title", mock_get_by_title)
-
-    response = test_app.get("/notes/title/something/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_all_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "True",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "True",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_completed():
-        return test_data
-
-    monkeypatch.setattr(crud, "get_completed", mock_get_completed)
-
-    response = test_app.get("/notes/completed/{completed}")
-    print(response.json())
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_all_not_completed_notes(test_app, monkeypatch):
-    test_data = [{"title": "Test", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")},
-                 {"title": "something", "description": "something else", "id": 2, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_not_completed():
-        return test_data
-
-    monkeypatch.setattr(crud, "get_not_completed", mock_get_not_completed)
-
-    response = test_app.get("/notes/not_completed/{not_completed}")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_note_by_description(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_by_description(description):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_description", mock_get_by_description)
-
-    response = test_app.get("/notes/description/something else/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_note_by_date(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_by_date(created_date):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_date", mock_get_by_date)
-
-    response = test_app.get("/notes/date/2021-06-17 18:00/")
-    assert response.status_code == 200
-    assert response.json() == test_data
-
-
-def test_read_note_by_date_invalid(test_app, monkeypatch):
-    test_data = [{"title": "something", "description": "something else", "id": 1, "completed": "False",
-                  "created_date": dt.now().strftime("%Y-%m-%d %H:%M")}]
-
-    async def mock_get_by_date(created_date):
-        return test_data
-
-    monkeypatch.setattr(crud, "get_by_date", mock_get_by_date)
-
-    response = test_app.get("/notes/date/2021-06-17 18:00:00/")
-    assert response.status_code == 200
 
