@@ -20,11 +20,11 @@
         </thead>
           <tbody> 
               <tr v-for="note in notes" :key="note.id">
-              <td>{{ note.id }}</td>
+                  <td>{{ note.id }}</td>
                   <td>{{ note.title }}</td>
                   <td>{{ note.description }}</td>
-                  <td>{{ note.completed }}</td>
-                  <td> {{ note.created_date }}</td>
+                  <td>{{ note.completed ? 'Yes' : 'No' }}</td>
+                  <td>{{ new Date(note.created_date).toLocaleString() }}</td>
               </tr>
           </tbody>
       </table>
