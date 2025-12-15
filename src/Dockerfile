@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
 
 # Install system dependencies
 RUN apt-get update && \
