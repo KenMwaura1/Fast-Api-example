@@ -1,5 +1,5 @@
 # Use a smaller base image
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 # Set work directory
 WORKDIR /usr/src/app
