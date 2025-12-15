@@ -6,7 +6,7 @@
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kenmwaura1)
 [![Twitter](https://badgen.net/badge/icon/twitter?icon=twitter&label=Follow&on)](https://twitter.com/Ken_Mwaura1)
 
-This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes.
+This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes. The API now supports unified search, filtering, and pagination.
 
 ![Fast-api](images/fast-api-scrnsht-1.png)
 
@@ -40,30 +40,21 @@ Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fa
    For fish users
 
    `source venv/bin/activate.fish`
-5. Cd into the src folder
+5. Install the required packages (from the `src` directory)
 
-   `cd src`
-6. Install the required packages
-
-   `python -m pip install -r requirements.txt`
-7. Start the app
+   `pip install -r src/requirements.txt`
+6. Start the app using the provided `run.sh` script
 
    ```shell
-   python main.py
+   ./run.sh
    ```
 
-   7b. Start the app using Uvicorn
-
-   ```shell
-   uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8002
-   ```
-
-8. Ensure you have a Postgres Database running locally.
-   Additionally create a `fast_api_dev` database with user `**fast_api**` having required privileges.
+7. Ensure you have a Postgres Database running locally.
+   Additionally create a `fast_api_dev` database with user `**hello_fastapi**` having required privileges.
    OR
-   Change the DATABASE_URL variable in the **.env** file inside then `app` folder to reflect database settings (user:password/db)
+   Change the DATABASE_URL environment variable (e.g., in a `.env` file at `src/app/.env-example`) to reflect your database settings.
 
-9. Check the app on [notes](http://localhost:8002/notes)
+8. Check the app on [notes](http://localhost:8002/notes). The `/notes` endpoint now supports `skip`, `limit`, `search`, and `completed` query parameters for pagination and filtering.
 Open your browser and navigate to [docs](http://localhost:8002/docs) to view the swagger documentation for the api.
 
 ## Vue Frontend (Optional)
@@ -108,7 +99,7 @@ While inside the root folder `Fast-Api-example`
       yarn serve
       ```
 
-4. Open your browser and navigate to [notes](http://localhost:5173)
+4. Open your browser and navigate to [notes](http://localhost:5173). The frontend has been updated to display boolean `completed` status and format the `created_date`.
 
 ## Installation method 2 (Run Locally using Docker)
 
@@ -124,9 +115,9 @@ While inside the root folder `Fast-Api-example`
 
    ```cd Fast-Api-example```
 
-5. Use Docker-Compose to spin up containers
+5. Use Docker-Compose to spin up containers. **Important: If you have previously run the Docker Compose, you must reset the database volume due to schema changes.**
 
-   `docker-compose up -d --build`
+   `docker-compose down -v && docker-compose up -d --build`
 
 6. If everything completes should be available on [notes](http://localhost:8002/notes)
 
@@ -134,8 +125,11 @@ While inside the root folder `Fast-Api-example`
 
 ## Tests
 
-Tests are available using pytest
-Run them using `pytest .` while in the root directory (/Fast-Api-example)
+Tests are available using pytest. They have been updated to reflect the new API structure and mock database interactions.
+Run them using:
+```bash
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src && ./venv/bin/python -m pytest src
+```
 
 ## Documentation
 
@@ -152,7 +146,7 @@ This is to enable the docker login step in the workflow and push the image to th
 
 It is also possible to use [Github Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-docker-registry) to store the docker image. In this case you will need to add the following secrets to your repository settings. `CR_PAT` and `CR_USERNAME` for the github packages account. In our case the username is the github username. The `CR_PAT` is a personal access token with the `write:packages` scope. This is to enable the docker login step in the workflow and push the image to the github packages repository. Alternatively you can remove the step from the workflow by commenting it out.
 
-The docker image is also tagged with the commit sha and pushed to the docker hub repository. This is to enable the image to be pulled by the docker-compose file in the root directory. The docker-compose file is used to spin up the containers locally. It is available on [Github Packages](https://github.com/KenMwaura1/Fast-Api-example/pkgs/container/fast-api-example) as well.
+The docker image is also tagged with the commit sha and pushed to the docker hub repository. This is to enable the image to be pulled by the docker-compose file in the root directory. It is available on [Github Packages](https://github.com/KenMwaura1/Fast-Api-example/pkgs/container/fast-api-example) as well.
 
 ## Docker Hub
 
