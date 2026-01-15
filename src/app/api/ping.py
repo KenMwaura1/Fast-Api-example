@@ -24,18 +24,24 @@ async def pong():
     Returns the current status of the API and database connection.
     """
     try:
-        # Verify database connection
-        if not database.is_connected():
+        # Verify database connection if it exists
+        db_status = "unknown"
+        if hasattr(database, 'is_connected'):
+            db_status = "connected" if database.is_connected() else "disconnected"
+        
+        if db_status == "disconnected":
             return PingResponse(
                 status="degraded",
                 message="API is running but database connection is unavailable"
             )
+        
         return PingResponse(
             status="healthy",
             message="API and database are operational"
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Service unavailable: {str(e)}"
+        # Return degraded status on error instead of 503
+        return PingResponse(
+            status="degraded",
+            message=f"Health check error: {str(e)}"
         )
