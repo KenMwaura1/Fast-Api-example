@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FastAPI Notes API - A production-ready asynchronous REST API for notes management">
+    <title>FastAPI Notes API - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #009688 0%, #00695c 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .badges {
+            margin-top: 20px;
+        }
+        
+        .badges img {
+            margin: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #009688;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #009688;
+            padding-bottom: 10px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #009688;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #009688;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .link-button {
+            display: block;
+            padding: 15px 25px;
+            background: #009688;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+        
+        .link-button:hover {
+            background: #00796b;
+            transform: scale(1.05);
+        }
+        
+        .link-button.secondary {
+            background: #667eea;
+        }
+        
+        .link-button.secondary:hover {
+            background: #5568d3;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        footer a {
+            color: #009688;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 FastAPI Notes API</h1>
+            <p>A production-ready asynchronous REST API built with FastAPI</p>
+            <div class="badges">
+                <img src="https://img.shields.io/badge/fastapi-0.115.8-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+                <img src="https://img.shields.io/badge/python-3.13-3776AB?logo=python&logoColor=white" alt="Python">
+                <img src="https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white" alt="Docker">
+            </div>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📖 Documentation</h2>
+                <div class="links">
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example" class="link-button" target="_blank">GitHub Repository</a>
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/README.md" class="link-button secondary" target="_blank">README</a>
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/API.md" class="link-button secondary" target="_blank">API Documentation</a>
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/DEVELOPMENT.md" class="link-button secondary" target="_blank">Development Guide</a>
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/CONTRIBUTING.md" class="link-button secondary" target="_blank">Contributing</a>
+                    <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/QUICK_REFERENCE.md" class="link-button secondary" target="_blank">Quick Reference</a>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>✨ Features</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>🚀 Async API</h3>
+                        <p>Built with FastAPI and async/await patterns for high performance</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🐘 PostgreSQL</h3>
+                        <p>Production-grade database with asyncpg driver</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔍 Search & Filter</h3>
+                        <p>Advanced search, filtering, and pagination support</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📝 CRUD Operations</h3>
+                        <p>Complete Create, Read, Update, Delete functionality</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🐳 Docker Ready</h3>
+                        <p>Fully containerized with Docker Compose</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🧪 Well Tested</h3>
+                        <p>Comprehensive test suite with 30+ tests</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📚 Auto Docs</h3>
+                        <p>Interactive OpenAPI/Swagger documentation</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎨 Vue Frontend</h3>
+                        <p>Optional modern frontend with Vite</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🚀 Quick Start</h2>
+                <p>Get started with Docker in 3 simple steps:</p>
+                <pre><code># Clone the repository
+git clone https://github.com/KenMwaura1/Fast-Api-example.git
+cd Fast-Api-example
+
+# Start with Docker Compose
+docker-compose up -d --build
+
+# Access the API
+# API: http://localhost:8002/notes
+# Docs: http://localhost:8002/docs</code></pre>
+            </div>
+            
+            <div class="section">
+                <h2>📡 API Endpoints</h2>
+                <p>The API provides the following endpoints:</p>
+                <ul style="list-style: none; padding: 20px;">
+                    <li style="margin: 10px 0;">
+                        <code>GET /notes</code> - List all notes with optional filtering and pagination
+                    </li>
+                    <li style="margin: 10px 0;">
+                        <code>POST /notes</code> - Create a new note
+                    </li>
+                    <li style="margin: 10px 0;">
+                        <code>GET /notes/{id}</code> - Get a specific note
+                    </li>
+                    <li style="margin: 10px 0;">
+                        <code>PUT /notes/{id}</code> - Update a note
+                    </li>
+                    <li style="margin: 10px 0;">
+                        <code>DELETE /notes/{id}</code> - Delete a note
+                    </li>
+                    <li style="margin: 10px 0;">
+                        <code>GET /ping</code> - Health check endpoint
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>🛠️ Tech Stack</h2>
+                <ul style="list-style: none; padding: 20px;">
+                    <li style="margin: 8px 0;"><strong>Framework:</strong> FastAPI 0.115.8</li>
+                    <li style="margin: 8px 0;"><strong>Python:</strong> 3.13</li>
+                    <li style="margin: 8px 0;"><strong>Database:</strong> PostgreSQL with asyncpg</li>
+                    <li style="margin: 8px 0;"><strong>ORM:</strong> SQLAlchemy 1.4.50</li>
+                    <li style="margin: 8px 0;"><strong>Server:</strong> Uvicorn with uvloop</li>
+                    <li style="margin: 8px 0;"><strong>Testing:</strong> pytest 7.4.3</li>
+                    <li style="margin: 8px 0;"><strong>Frontend:</strong> Vue 3 + Vite</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>🤝 Contributing</h2>
+                <p>Contributions are welcome! Please check out the <a href="https://github.com/KenMwaura1/Fast-Api-example/blob/main/CONTRIBUTING.md" style="color: #009688;">Contributing Guide</a> for guidelines.</p>
+                <pre><code># Fork and clone the repo
+git clone https://github.com/YOUR_USERNAME/Fast-Api-example.git
+
+# Create a feature branch
+git checkout -b feature/amazing-feature
+
+# Make your changes and test
+pytest src -v
+
+# Commit and push
+git commit -m "feat: add amazing feature"
+git push origin feature/amazing-feature</code></pre>
+            </div>
+            
+            <div class="section">
+                <h2>📖 Resources</h2>
+                <ul style="padding: 20px;">
+                    <li><a href="https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515" style="color: #009688;">Official Tutorial</a> - Complete step-by-step guide</li>
+                    <li><a href="https://fastapi.tiangolo.com/" style="color: #009688;">FastAPI Documentation</a></li>
+                    <li><a href="https://docs.docker.com/" style="color: #009688;">Docker Documentation</a></li>
+                    <li><a href="https://www.postgresql.org/docs/" style="color: #009688;">PostgreSQL Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Created by <a href="https://github.com/KenMwaura1" target="_blank">Kennedy Mwaura</a></p>
+            <p style="margin-top: 10px;">
+                <a href="https://twitter.com/Ken_Mwaura1" target="_blank">Twitter</a> | 
+                <a href="https://github.com/KenMwaura1" target="_blank">GitHub</a>
+            </p>
+            <p style="margin-top: 15px; opacity: 0.8;">Built with ❤️ using FastAPI</p>
+            <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.6;">Licensed under MIT</p>
+        </footer>
+    </div>
+</body>
+</html>
