@@ -22,7 +22,7 @@ pydantic
 pylint
 pyparsing
 python-dotenv
-pytz=
+pytz
 six
 SQLAlchemy
 starlette
