@@ -29,6 +29,7 @@ A production-ready asynchronous REST API built with [FastAPI](https://fastapi.ti
 - [Testing](#-testing)
 - [Documentation](#-documentation)
 - [Contributing](#-contributing)
+- [Troubleshooting](#-troubleshooting)
 
 ## 🚀 Quick Start with Docker
 
@@ -320,8 +321,226 @@ docker pull kenmwaura1/fast-api-example:latest
 ## 📖 Resources
 
 - [Official Tutorial](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515) - Complete step-by-step guide
+- [API Documentation](API.md) - Comprehensive API endpoint reference
+- [Development Guide](DEVELOPMENT.md) - Setup and development workflow
+- [Contributing Guide](CONTRIBUTING.md) - Guidelines for contributing
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Docker Documentation](https://docs.docker.com/)
+
+## 🐛 Troubleshooting
+
+### Installation Issues
+
+#### Python Package Installation Fails
+
+If you encounter errors installing packages (especially `pydantic-core` or `greenlet`):
+
+1. **Ensure you have Python 3.13 or 3.12** (not 3.14+, which has compatibility issues)
+   ```bash
+   python --version
+   ```
+
+2. **Install build dependencies** (Linux/Mac):
+   ```bash
+   # Ubuntu/Debian
+   sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
+   
+   # Mac
+   brew install build-essential openssl
+   ```
+
+3. **Upgrade pip, setuptools, and wheel**:
+   ```bash
+   pip install --upgrade pip setuptools wheel
+   ```
+
+### Database Connection Issues
+
+#### "Connection refused" when starting the app
+
+1. **Verify PostgreSQL is running**:
+   ```bash
+   # Check status
+   sudo systemctl status postgresql
+   
+   # Start if not running
+   sudo systemctl start postgresql
+   ```
+
+2. **Verify credentials in `.env`**:
+   ```bash
+   # Check database exists
+   psql -U hello_fastapi -d fast_api_dev -c "SELECT 1"
+   ```
+
+3. **Check database connection string**:
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+   ```
+
+#### Using Docker database
+
+If using Docker Compose:
+```bash
+# Check if database container is running
+docker-compose ps
+
+# View database logs
+docker-compose logs db
+
+# Restart database
+docker-compose restart db
+```
+
+### Port Already in Use
+
+#### Port 8000 or 8002 already in use
+
+```bash
+# Find process using port 8000
+lsof -i :8000
+
+# Kill the process (replace PID with actual process ID)
+kill -9 <PID>
+
+# Or use a different port
+PORT=8001 ./run.sh
+```
+
+### Docker Issues
+
+#### Docker build fails
+
+1. **Ensure you're using Python 3.13**:
+   - Check `src/Dockerfile` line 2
+
+2. **Clear Docker cache**:
+   ```bash
+   docker system prune -a
+   docker-compose down -v
+   ```
+
+3. **Rebuild**:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+#### Container exits immediately
+
+```bash
+# Check container logs
+docker-compose logs web
+
+# Or for specific container
+docker logs <container_id>
+```
+
+### API Issues
+
+#### 404 Not Found on `/docs`
+
+The API might not be running at the expected URL:
+- Verify the port: Check `./run.sh` for PORT setting
+- Verify the host: Usually `http://localhost:8000`
+- Check that the API actually started without errors
+
+#### 422 Validation Error
+
+Usually means your request data doesn't match expected format:
+- Check field lengths: title (3-255), description (3-1000)
+- Ensure required fields are included
+- Verify JSON format is correct
+
+#### 500 Internal Server Error
+
+Check the application logs:
+```bash
+# For local development
+# Errors should show in the terminal where you ran ./run.sh
+
+# For Docker
+docker-compose logs web
+```
+
+### Testing Issues
+
+#### Tests fail with "ModuleNotFoundError"
+
+```bash
+# Set PYTHONPATH correctly
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+pytest src -v
+```
+
+#### Database-related test failures
+
+Tests use mocked database, so this usually means the test fixture isn't working:
+
+```bash
+# Check conftest.py exists
+cat src/tests/conftest.py
+
+# Run with verbose output
+pytest src -v -s
+```
+
+### Performance Issues
+
+#### Slow API responses
+
+1. **Check database performance**:
+   ```sql
+   -- Log in to database
+   psql -U hello_fastapi -d fast_api_dev
+   
+   -- Check table size
+   SELECT pg_size_pretty(pg_total_relation_size('notes'));
+   ```
+
+2. **Check query logs** (if enabled)
+
+3. **Verify indexes exist** on frequently queried columns
+
+#### High memory usage
+
+- Reduce `limit` parameter in queries (max is 100)
+- Check for memory leaks in custom code
+- Monitor using `docker stats` (for Docker deployment)
+
+### Frontend Issues
+
+#### Vue frontend can't connect to API
+
+1. **Verify API is running**:
+   ```bash
+   curl http://localhost:8000/ping
+   ```
+
+2. **Check CORS configuration** in `.env`:
+   ```env
+   ALLOWED_ORIGINS=http://localhost:5173,http://localhost
+   ```
+
+3. **Check frontend URL** in browser matches one of allowed origins
+
+### Still Having Issues?
+
+1. **Check the documentation**:
+   - [API.md](API.md) - API reference
+   - [DEVELOPMENT.md](DEVELOPMENT.md) - Development guide
+
+2. **Search existing issues**:
+   - [GitHub Issues](https://github.com/KenMwaura1/Fast-Api-example/issues)
+
+3. **Open a new issue** with:
+   - Clear description of the problem
+   - Steps to reproduce
+   - Error messages and logs
+   - Environment details (OS, Python version, etc.)
+
+4. **Ask for help**:
+   - GitHub Discussions
+   - Stack Overflow (tag with `fastapi`, `postgresql`)
 
 ## 📝 License
 
