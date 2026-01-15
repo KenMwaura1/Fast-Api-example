@@ -1,157 +1,345 @@
 # FastAPI Example App
 
-![fastapi-0.104.1-informational](https://img.shields.io/badge/fastapi-0.104.1-informational) [![CodeQL](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml)
-[![Docker Compose Actions Workflow](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml)
+![fastapi-0.115.8](https://img.shields.io/badge/fastapi-0.115.8-009688?logo=fastapi&logoColor=white) ![python-3.13](https://img.shields.io/badge/python-3.13-3776AB?logo=python&logoColor=white) [![CodeQL](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/codeql.yml) [![Docker Compose Actions Workflow](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml/badge.svg)](https://github.com/KenMwaura1/Fast-Api-example/actions/workflows/docker-image.yml)
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kenmwaura1)
 [![Twitter](https://badgen.net/badge/icon/twitter?icon=twitter&label=Follow&on)](https://twitter.com/Ken_Mwaura1)
 
-This repository contains code for asynchronous example api using the [Fast Api framework](https://fastapi.tiangolo.com/) ,Uvicorn server and Postgres Database to perform crud operations on notes. The API now supports unified search, filtering, and pagination.
+A production-ready asynchronous REST API built with [FastAPI](https://fastapi.tiangolo.com/), featuring CRUD operations for notes management. The API includes advanced features like search, filtering, pagination, and is fully containerized with Docker.
+
+## ✨ Features
+
+- 🚀 **Asynchronous API** - Built with FastAPI and async/await patterns
+- 🐘 **PostgreSQL Database** - Production-grade database with asyncpg driver
+- 🔍 **Search & Filter** - Unified search with pagination support
+- 📝 **CRUD Operations** - Complete Create, Read, Update, Delete functionality
+- 🐳 **Docker Support** - Fully containerized with Docker Compose
+- 🧪 **Testing** - Comprehensive test suite with pytest
+- 📚 **API Documentation** - Auto-generated OpenAPI/Swagger docs
+- 🎨 **Vue Frontend** - Optional modern frontend with Vite
 
 ![Fast-api](images/fast-api-scrnsht-1.png)
 
-## Accompanying Article
+## 📖 Table of Contents
 
-Read the full tutorial [here](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515)
+- [Quick Start](#-quick-start-with-docker)
+- [Local Installation](#-local-installation)
+- [Vue Frontend](#-vue-frontend-optional)
+- [API Endpoints](#-api-endpoints)
+- [Testing](#-testing)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
 
-## Installation method 1 (Run application locally)
+## 🚀 Quick Start with Docker
 
-1. Clone this Repo
+The fastest way to get started is using Docker Compose:
 
-   `git clone (https://github.com/KenMwaura1/Fast-Api-example)`
-2. Cd into the Fast-Api folder
+### Prerequisites
 
-   `cd Fast-Api-example`
-3. Create a virtual environment
+- [Docker](https://docs.docker.com/install/) (20.10+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
 
-   `python3 -m venv venv`
-4. Activate virtualenv
+### Steps
 
-   `source venv/bin/activate`
+1. **Clone the repository**
 
-   For zsh users
+   ```bash
+   git clone https://github.com/KenMwaura1/Fast-Api-example.git
+   cd Fast-Api-example
+   ```
 
-   `source venv/bin/activate.zsh`
+2. **Start the application**
 
-   For bash users
+   ```bash
+   docker-compose up -d --build
+   ```
 
-   `source venv/bin/activate.bash`
+3. **Access the API**
+   - API: <http://localhost:8002/notes>
+   - Swagger Docs: <http://localhost:8002/docs>
+   - ReDoc: <http://localhost:8002/redoc>
 
-   For fish users
+> **Note**: If you've previously run Docker Compose, reset the database volume: `docker-compose down -v && docker-compose up -d --build`
 
-   `source venv/bin/activate.fish`
-5. Install the required packages (from the `src` directory)
+## 💻 Local Installation
 
-   `pip install -r src/requirements.txt`
-6. Start the app using the provided `run.sh` script
+### Prerequisites
 
-   ```shell
+- Python 3.13+
+- PostgreSQL 12+
+- pip or uv package manager
+
+### Setup Instructions
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/KenMwaura1/Fast-Api-example.git
+   cd Fast-Api-example
+   ```
+
+2. **Create and activate virtual environment**
+
+   ```bash
+   python3 -m venv venv
+   
+   # Linux/Mac
+   source venv/bin/activate
+   
+   # Windows
+   .\venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   cd src
+   pip install -r requirements.txt
+   ```
+
+4. **Configure database**
+
+   Create a PostgreSQL database:
+
+   ```sql
+   CREATE DATABASE fast_api_dev;
+   CREATE USER hello_fastapi WITH PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE fast_api_dev TO hello_fastapi;
+   ```
+
+   Or update the `DATABASE_URL` in `src/app/.env`:
+
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost/dbname
+   ```
+
+5. **Run the application**
+
+   ```bash
+   cd ..
    ./run.sh
    ```
 
-7. Ensure you have a Postgres Database running locally.
-   Additionally create a `fast_api_dev` database with user `**hello_fastapi**` having required privileges.
-   OR
-   Change the DATABASE_URL environment variable (e.g., in a `.env` file at `src/app/.env-example`) to reflect your database settings.
+6. **Access the API**
+   - API: <http://localhost:8002/notes>
+   - Swagger Docs: <http://localhost:8002/docs>
 
-8. Check the app on [notes](http://localhost:8002/notes). The `/notes` endpoint now supports `skip`, `limit`, `search`, and `completed` query parameters for pagination and filtering.
-Open your browser and navigate to [docs](http://localhost:8002/docs) to view the swagger documentation for the api.
+## 🎨 Vue Frontend (Optional)
 
-## Vue Frontend (Optional)
+A modern Vue 3 frontend built with Vite is included for testing the API.
 
-The is a simple Vue frontend using [vite](https://vitejs.dev/guide/) that was added. However it is an optional step in running the application.
+### Prerequisites
 
-### Installation
+- Node.js 16+ or 18+ (LTS recommended)
+- npm or yarn
 
-Ensure you have [Node.js](https://nodejs.org/en/) installed. any version above 16 should work.
+### Setup
 
-While inside the root folder `Fast-Api-example`
+1. **Navigate to frontend directory**
 
-1. Cd into the `vue-client` folder.
+   ```bash
+   cd vue-client
+   ```
 
-   ```shell
-      cd vue-client
-      ```
+2. **Install dependencies**
 
-2. Install the required dependencies.
-   for NPM:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-   ```shell
-      npm install
-      ```
+3. **Start development server**
 
-   for Yarn:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-   ```shell
-      yarn install
-      ```
+4. **Access the frontend**
+   - Frontend: <http://localhost:5173>
 
-3. Start the Vue app
-   for NPM:
+The frontend displays notes with their completion status and formatted creation dates.
 
-   ```shell
-      npm run serve
-      ```
+## 📡 API Endpoints
 
-   for Yarn:
+### Notes
 
-   ```shell
-      yarn serve
-      ```
+| Method | Endpoint | Description | Query Parameters |
+|--------|----------|-------------|------------------|
+| GET | `/notes` | List all notes | `skip`, `limit`, `search`, `completed` |
+| POST | `/notes` | Create a note | - |
+| GET | `/notes/{id}` | Get a note | - |
+| PUT | `/notes/{id}` | Update a note | - |
+| DELETE | `/notes/{id}` | Delete a note | - |
 
-4. Open your browser and navigate to [notes](http://localhost:5173). The frontend has been updated to display boolean `completed` status and format the `created_date`.
+### Ping
 
-## Installation method 2 (Run Locally using Docker)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/ping` | Health check |
 
-1. Ensure [Docker](https://docs.docker.com/install/) is installed.
+### Example Request
 
-2. Ensure [Docker Compose](https://docs.docker.com/compose/install/) is installed.
-
-3. Clone this Repo
-
-   `git clone (https://github.com/KenMwaura1/Fast-Api-example)`
-
-4. Change into the directory
-
-   ```cd Fast-Api-example```
-
-5. Use Docker-Compose to spin up containers. **Important: If you have previously run the Docker Compose, you must reset the database volume due to schema changes.**
-
-   `docker-compose down -v && docker-compose up -d --build`
-
-6. If everything completes should be available on [notes](http://localhost:8002/notes)
-
-7. Docs are generated on [docs](http://localhost:8002/docs)
-
-## Tests
-
-Tests are available using pytest. They have been updated to reflect the new API structure and mock database interactions.
-Run them using:
 ```bash
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src && ./venv/bin/python -m pytest src
+# Get all completed notes with pagination
+curl "http://localhost:8002/notes?completed=true&skip=0&limit=10"
+
+# Search notes
+curl "http://localhost:8002/notes?search=fastapi"
+
+## 🧪 Testing
+
+The project includes a comprehensive test suite using pytest with database mocking.
+
+### Run Tests
+
+```bash
+# From the project root
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+./venv/bin/python -m pytest src
+
+# With coverage
+./venv/bin/python -m pytest src --cov=src --cov-report=html
+
+# Run specific test file
+./venv/bin/python -m pytest src/tests/test_notes.py
 ```
 
-## Documentation
+### Test Structure
 
-Open API Documentation is provided by [Redoc](http://localhost:8002/redoc)
+- `tests/test_ping.py` - Health check endpoint tests
+- `tests/test_notes.py` - CRUD operations and filtering tests
+- `tests/conftest.py` - Shared fixtures and test configuration
 
-## Contributing
+## 📚 Documentation
 
-Contributions are welcome, please open an issue or submit a PR.
+### API Documentation
 
-## Github Actions
+- **Swagger UI**: <http://localhost:8002/docs> (Interactive API documentation)
+- **ReDoc**: <http://localhost:8002/redoc> (Alternative documentation view)
 
-Github actions are used to run tests and build the docker image. The docker image is pushed to [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example). Inorder to effectively use the actions you will need to add the following secrets to your repository settings. `DOCKER_USERNAME` and `DOCKER_PASSWORD` for the docker hub account.
-This is to enable the docker login step in the workflow and push the image to the docker hub repository. Alternatively you can remove the step from the workflow by commenting it out.
+### Tech Stack
 
-It is also possible to use [Github Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-docker-registry) to store the docker image. In this case you will need to add the following secrets to your repository settings. `CR_PAT` and `CR_USERNAME` for the github packages account. In our case the username is the github username. The `CR_PAT` is a personal access token with the `write:packages` scope. This is to enable the docker login step in the workflow and push the image to the github packages repository. Alternatively you can remove the step from the workflow by commenting it out.
+- **Framework**: FastAPI 0.115.8
+- **Python**: 3.13
+- **Database**: PostgreSQL with asyncpg
+- **ORM**: SQLAlchemy 1.4.50
+- **Server**: Uvicorn with uvloop
+- **Testing**: pytest 7.4.3
+- **Frontend**: Vue 3 + Vite
 
-The docker image is also tagged with the commit sha and pushed to the docker hub repository. This is to enable the image to be pulled by the docker-compose file in the root directory. It is available on [Github Packages](https://github.com/KenMwaura1/Fast-Api-example/pkgs/container/fast-api-example) as well.
+## 🛠️ Development
 
-## Docker Hub
+### Project Structure
 
-The docker image is available on [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example)
+```
+Fast-Api-example/
+├── src/
+│   ├── app/
+│   │   ├── api/          # API routes
+│   │   │   ├── notes.py  # Notes endpoints
+│   │   │   ├── ping.py   # Health check
+│   │   │   ├── crud.py   # Database operations
+│   │   │   └── models.py # Pydantic models
+│   │   ├── db.py         # Database configuration
+│   │   └── main.py       # Application entry point
+│   ├── tests/            # Test suite
+│   ├── Dockerfile        # Docker configuration
+│   └── requirements.txt  # Python dependencies
+├── vue-client/           # Vue frontend
+├── docker-compose.yml    # Docker Compose config
+└── run.sh               # Local run script
+```
 
-## License
+### Environment Variables
 
-[MIT](https://choosealicense.com/licenses/mit/)
+Create a `.env` file in `src/app/`:
+
+```env
+DATABASE_URL=postgresql://hello_fastapi:password@localhost/fast_api_dev
+ENVIRONMENT=development
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Contribution Guidelines
+
+- Follow PEP 8 style guide
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+
+## 🚢 CI/CD & Deployment
+
+### GitHub Actions
+
+The project uses GitHub Actions for CI/CD with two main workflows:
+
+- **CodeQL Analysis** - Security scanning and code quality checks
+- **Docker Build & Push** - Automated Docker image builds
+
+### Docker Hub
+
+Pre-built Docker images are available at:
+
+- [Docker Hub](https://hub.docker.com/repository/docker/kenmwaura1/fast-api-example)
+- [GitHub Packages](https://github.com/KenMwaura1/Fast-Api-example/pkgs/container/fast-api-example)
+
+### Required Secrets
+
+To use GitHub Actions, add these secrets to your repository:
+
+**For Docker Hub:**
+
+- `DOCKER_USERNAME` - Your Docker Hub username
+- `DOCKER_PASSWORD` - Your Docker Hub password or access token
+
+**For GitHub Packages:**
+
+- `CR_PAT` - Personal Access Token with `write:packages` scope
+- `CR_USERNAME` - Your GitHub username
+
+> **Note**: You can remove or comment out the Docker push steps if you don't need image publishing.
+
+### Pull Pre-built Image
+
+```bash
+docker pull kenmwaura1/fast-api-example:latest
+```
+
+## 📖 Resources
+
+- [Official Tutorial](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515) - Complete step-by-step guide
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Docker Documentation](https://docs.docker.com/)
+
+## 📝 License
+
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
+
+## 👤 Author
+
+**Kennedy Mwaura**
+
+- Twitter: [@Ken_Mwaura1](https://twitter.com/Ken_Mwaura1)
+- GitHub: [@KenMwaura1](https://github.com/KenMwaura1)
+
+## ☕ Support
+
+If you find this project helpful, consider:
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kenmwaura1)
+
+---
+
+**Built with ❤️ using FastAPI**
