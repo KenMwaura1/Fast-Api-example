@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import Optional
 
@@ -20,8 +20,8 @@ class NoteDB(NoteBase):
     id: int = Field(..., description="Unique note identifier")
     created_date: datetime = Field(..., description="Note creation timestamp")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": 1,
                 "title": "Sample Note",
@@ -30,6 +30,7 @@ class NoteDB(NoteBase):
                 "created_date": "2024-01-15T10:30:00"
             }
         }
+    )
 
 
 class ErrorResponse(BaseModel):
