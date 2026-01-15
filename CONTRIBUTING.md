@@ -20,6 +20,7 @@ Please be respectful and constructive in all interactions. We're building this p
    - Error messages and stack traces
 
 **Example:**
+
 ```
 Title: API returns 500 error when creating note with special characters
 
@@ -41,6 +42,7 @@ Environment: Python 3.13, PostgreSQL 14, FastAPI 0.115.8
 4. **Include examples** - Show the desired behavior
 
 **Example:**
+
 ```
 Feature: Add note categories/tags
 
@@ -91,6 +93,7 @@ isort src/app
 ### Submitting PR
 
 1. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature
    ```
@@ -102,6 +105,7 @@ isort src/app
    - Screenshots/examples if applicable
 
 3. **PR Template:**
+
    ```markdown
    ## Description
    Brief description of changes
@@ -135,35 +139,41 @@ isort src/app
 ## Types of Contributions
 
 ### Documentation
+
 - Fix typos or unclear explanations
 - Add examples
 - Improve API documentation
 - Update guides and tutorials
 
 **How to contribute:**
+
 - Edit markdown files directly
 - Submit PR with your improvements
 - Help translate documentation
 
 ### Bug Fixes
+
 - Fix reported bugs
 - Improve error handling
 - Performance improvements
 - Security fixes
 
 **How to contribute:**
+
 1. Pick an issue labeled `bug`
 2. Create a fix
 3. Add test case to prevent regression
 4. Submit PR
 
 ### Features
+
 - New endpoints
 - Enhanced filtering/searching
 - Performance optimization
 - Code refactoring
 
 **How to contribute:**
+
 1. Discuss in issue first (especially for large changes)
 2. Implement the feature
 3. Add comprehensive tests
@@ -171,12 +181,14 @@ isort src/app
 5. Submit PR
 
 ### Tests
+
 - Increase test coverage
 - Add edge case tests
 - Improve test structure
 - Add integration tests
 
 **How to contribute:**
+
 - Review existing tests
 - Identify gaps
 - Write new tests
@@ -187,6 +199,7 @@ isort src/app
 ### Python Code
 
 ✅ **Do:**
+
 - Use type hints
 - Write docstrings
 - Handle exceptions properly
@@ -216,6 +229,7 @@ async def get_note(note_id: int) -> Optional[NoteDB]:
 ```
 
 ❌ **Don't:**
+
 - Ignore type hints
 - Skip error handling
 - Write cryptic variable names
@@ -234,6 +248,7 @@ async def fn(id):
 ### Tests
 
 ✅ **Do:**
+
 - Test happy path and error cases
 - Use descriptive test names
 - Mock external dependencies
@@ -252,6 +267,7 @@ def test_note_validation(title, description, expected):
 ```
 
 ❌ **Don't:**
+
 - Test implementation details
 - Create brittle tests
 - Skip edge cases
@@ -261,6 +277,7 @@ def test_note_validation(title, description, expected):
 ### Documentation
 
 ✅ **Do:**
+
 - Use clear, concise language
 - Include examples
 - Document assumptions
@@ -268,6 +285,7 @@ def test_note_validation(title, description, expected):
 - Add code comments for complex logic
 
 ❌ **Don't:**
+
 - Assume reader knowledge
 - Leave documentation outdated
 - Skip examples
@@ -286,6 +304,7 @@ Use conventional commits format:
 ```
 
 ### Type
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation changes
@@ -295,6 +314,7 @@ Use conventional commits format:
 - `chore`: Build process, dependencies, etc
 
 ### Scope
+
 - `api`: API endpoints
 - `db`: Database layer
 - `models`: Data models
@@ -341,22 +361,26 @@ When reviewing PRs, ensure:
 ## Development Environment
 
 ### Required Tools
+
 - Python 3.13+
 - PostgreSQL 12+
 - Git
 
 ### Optional Tools
+
 - Docker & Docker Compose
 - IDE/Editor with Python support
 - Postman or similar API testing tool
 - Database client (pgAdmin, DBeaver)
 
 ### Setup Steps
+
 See [DEVELOPMENT.md](DEVELOPMENT.md#local-development-setup)
 
 ## Common Mistakes to Avoid
 
 1. **Not running tests before submitting PR**
+
    ```bash
    pytest src -v  # Always run this!
    ```
@@ -371,6 +395,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md#local-development-setup)
    - Docstrings (always)
 
 4. **Hardcoding values**
+
    ```python
    # Bad
    DB_URL = "postgresql://user:pass@localhost/db"
@@ -394,6 +419,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md#local-development-setup)
 ## Recognition
 
 Contributors are recognized in:
+
 - README.md (Contributors section)
 - GitHub contributors page
 - Release notes

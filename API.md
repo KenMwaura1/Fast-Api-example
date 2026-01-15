@@ -56,6 +56,7 @@ Health check endpoint to verify API and database connectivity.
 ```
 
 **Example:**
+
 ```bash
 curl http://localhost:8002/ping
 ```
@@ -69,6 +70,7 @@ curl http://localhost:8002/ping
 Create a new note.
 
 **Request Body:**
+
 ```json
 {
   "title": "My First Note",
@@ -102,6 +104,7 @@ Create a new note.
 - `422 Unprocessable Entity` - Invalid input (validation error)
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:8002/notes \
   -H "Content-Type: application/json" \
@@ -150,21 +153,25 @@ Retrieve notes with optional filtering, searching, and pagination.
 **Examples:**
 
 Get all notes with default pagination:
+
 ```bash
 curl http://localhost:8002/notes
 ```
 
 Get only completed notes:
+
 ```bash
 curl "http://localhost:8002/notes?completed=true"
 ```
 
 Search for notes:
+
 ```bash
 curl "http://localhost:8002/notes?search=api"
 ```
 
 Combine filters with pagination:
+
 ```bash
 curl "http://localhost:8002/notes?completed=true&search=work&skip=0&limit=5"
 ```
@@ -199,6 +206,7 @@ Retrieve a specific note by ID.
 - `422 Unprocessable Entity` - Invalid ID format
 
 **Example:**
+
 ```bash
 curl http://localhost:8002/notes/1
 ```
@@ -214,6 +222,7 @@ Update an existing note.
 - `id` (integer, required): Note ID. Must be > 0.
 
 **Request Body:**
+
 ```json
 {
   "title": "Updated Title",
@@ -248,6 +257,7 @@ Update an existing note.
 - `422 Unprocessable Entity` - Invalid ID format or invalid input data
 
 **Example:**
+
 ```bash
 curl -X PUT http://localhost:8002/notes/1 \
   -H "Content-Type: application/json" \
@@ -290,6 +300,7 @@ Returns the deleted note:
 - `422 Unprocessable Entity` - Invalid ID format
 
 **Example:**
+
 ```bash
 curl -X DELETE http://localhost:8002/notes/1
 ```
@@ -320,6 +331,7 @@ Pagination is supported via `skip` and `limit` parameters:
 - Maximum `limit`: 100
 
 **Example:**
+
 ```bash
 # Get items 0-9
 curl "http://localhost:8002/notes?skip=0&limit=10"
@@ -367,8 +379,8 @@ All dates are returned in ISO 8601 format with timezone information:
 
 Two interactive documentation interfaces are available:
 
-- **Swagger UI:** http://localhost:8002/docs
-- **ReDoc:** http://localhost:8002/redoc
+- **Swagger UI:** <http://localhost:8002/docs>
+- **ReDoc:** <http://localhost:8002/redoc>
 
 Use these to explore the API with a user-friendly interface.
 
