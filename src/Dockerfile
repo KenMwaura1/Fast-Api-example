@@ -37,13 +37,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Install only runtime dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    libpq5 && \
+    libpq5 \
+    curl && \
     rm -rf /var/lib/apt/lists/* && \
     # Create non-root user for security
     groupadd -r app && useradd -r -g app app
 
-# Copy Python dependencies from builder
+# Copy Python dependencies and executables from builder
 COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy application code
 COPY --chown=app:app . .
@@ -53,7 +55,7 @@ USER app
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/ping')" || exit 1
+    CMD curl -f http://localhost:8000/ping || exit 1
 
 # Expose port
 EXPOSE 8000
