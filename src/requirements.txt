@@ -28,7 +28,7 @@ pluggy==1.6.0
 psycopg2-binary==2.9.11
 py==1.11.0
 pydantic==2.12.5
-pydantic_core==2.41.5
+pydantic_core==2.44.0
 Pygments==2.19.2
 pylint==4.0.4
 pyparsing==3.3.1
