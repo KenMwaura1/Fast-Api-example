@@ -38,7 +38,7 @@ pytz==2025.2
 requests==2.33.1
 six==1.17.0
 SQLAlchemy==2.0.45
-starlette==0.50.0
+starlette==0.52.1
 tomlkit==0.14.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
