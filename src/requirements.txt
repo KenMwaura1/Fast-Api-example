@@ -1,7 +1,7 @@
 annotated-doc==0.0.4
 annotated-types==0.7.0
 anyio==4.13.0
-astroid==4.0.3
+astroid==4.1.2
 asyncpg==0.31.0
 attrs==25.4.0
 certifi==2026.2.25
