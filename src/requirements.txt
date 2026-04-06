@@ -35,7 +35,7 @@ pyparsing==3.3.1
 pytest==9.0.2
 python-dotenv==1.2.1
 pytz==2025.2
-requests==2.33.0
+requests==2.33.1
 six==1.17.0
 SQLAlchemy==2.0.45
 starlette==0.50.0
