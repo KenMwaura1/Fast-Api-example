@@ -321,9 +321,9 @@ docker pull kenmwaura1/fast-api-example:latest
 ## 📖 Resources
 
 - [Official Tutorial](https://dev.to/ken_mwaura1/getting-started-with-fast-api-and-docker-515) - Complete step-by-step guide
-- [API Documentation](API.md) - Comprehensive API endpoint reference
-- [Development Guide](DEVELOPMENT.md) - Setup and development workflow
-- [Contributing Guide](CONTRIBUTING.md) - Guidelines for contributing
+- [API Documentation](docs/API.md) - Comprehensive API endpoint reference
+- [Development Guide](docs/DEVELOPMENT.md) - Setup and development workflow
+- [Contributing Guide](docs/CONTRIBUTING.md) - Guidelines for contributing
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Docker Documentation](https://docs.docker.com/)
 
