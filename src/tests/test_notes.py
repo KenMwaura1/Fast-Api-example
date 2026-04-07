@@ -39,7 +39,7 @@ class TestCreateNote:
         monkeypatch.setattr(crud, "post", mock_post)
         monkeypatch.setattr(crud, "get", mock_get)
 
-        response = test_app.post("/notes/", content=json.dumps(test_request_payload))
+        response = test_app.post("/notes/", json=test_request_payload)
         assert response.status_code == 201
         assert response.json() == test_response_payload
 
@@ -72,7 +72,7 @@ class TestCreateNote:
         monkeypatch.setattr(crud, "post", mock_post)
         monkeypatch.setattr(crud, "get", mock_get)
 
-        response = test_app.post("/notes/", content=json.dumps(test_payload))
+        response = test_app.post("/notes/", json=test_payload)
         assert response.status_code == expected_status
 
 
@@ -274,7 +274,7 @@ class TestUpdateNote:
         monkeypatch.setattr(crud, "get", mock_get)
         monkeypatch.setattr(crud, "put", mock_put)
 
-        response = test_app.put("/notes/1", content=json.dumps(test_update_data))
+        response = test_app.put("/notes/1", json=test_update_data)
         assert response.status_code == 200
         assert response.json() == test_response
 
@@ -285,10 +285,10 @@ class TestUpdateNote:
 
         monkeypatch.setattr(crud, "get", mock_get)
 
-        response = test_app.put("/notes/999", content=json.dumps({
+        response = test_app.put("/notes/999", json={
             "title": "foo",
             "description": "bar"
-        }))
+        })
         assert response.status_code == 404
 
     @pytest.mark.parametrize(
@@ -315,7 +315,7 @@ class TestUpdateNote:
 
         monkeypatch.setattr(crud, "get", mock_get)
 
-        response = test_app.put(f"/notes/{id}", content=json.dumps(payload))
+        response = test_app.put(f"/notes/{id}", json=payload)
         assert response.status_code == expected_status
 
 
