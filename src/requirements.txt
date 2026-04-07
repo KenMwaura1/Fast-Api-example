@@ -10,7 +10,6 @@ charset-normalizer==3.4.7
 click==8.3.1
 databases==0.9.0
 dill==0.4.0
-fastapi==0.128.0
 greenlet==3.3.2
 h11==0.16.0
 httpcore==1.0.9
@@ -28,7 +27,7 @@ pluggy==1.6.0
 psycopg2-binary==2.9.11
 py==1.11.0
 pydantic==2.12.5
-pydantic_core==2.45.0
+# Let pip resolve a compatible pydantic-core (remove explicit pin)
 Pygments==2.19.2
 pylint==4.0.4
 pyparsing==3.3.1
@@ -38,7 +37,8 @@ pytz==2025.2
 requests==2.33.1
 six==1.17.0
 SQLAlchemy==2.0.45
-starlette==0.50.0
+fastapi==0.135.3
+# Let pip resolve Starlette (remove explicit pin)
 tomlkit==0.14.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
