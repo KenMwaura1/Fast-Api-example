@@ -28,7 +28,7 @@ py==1.11.0
 pydantic==2.12.5
 # Let pip resolve a compatible pydantic-core (remove explicit pin)
 Pygments==2.19.2
-pylint==4.0.4
+pylint==4.0.5
 pyparsing==3.3.1
 pytest==9.0.3
 python-dotenv==1.2.2
