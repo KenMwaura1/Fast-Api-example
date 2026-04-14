@@ -1,0 +1,5 @@
+isort==7.0.0
+pylint==4.0.5
+pytest==9.0.2
+ruff==0.15.9
+
