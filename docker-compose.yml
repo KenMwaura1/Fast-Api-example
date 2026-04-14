@@ -1,13 +1,14 @@
 services:
   web:
     build: ./src
-    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
     volumes:
       - ./src/:/usr/src/app/
     ports:
       - "8002:8000"
     environment:
       - DATABASE_URL=postgresql://hello_fastapi:hello_fastapi@db/hello_fastapi_dev
+      - SECRET_KEY=your-secret-key-change-in-production
+      - ALLOWED_ORIGINS=http://localhost:5173,http://localhost:8002
     depends_on:
       db:
         condition: service_healthy
@@ -26,11 +27,21 @@ services:
       timeout: 5s
       retries: 5
 
+  vue-client:
+    build: ./vue-client
+    volumes:
+      - ./vue-client/:/usr/src/app/
+      - /usr/src/app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8002
+    depends_on:
+      - web
+
 volumes:
   postgres_data:
 
 networks:
   default: 
     name: hello_fastapi
-
-
