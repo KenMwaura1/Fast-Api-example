@@ -8,7 +8,7 @@ chardet==5.2.0
 charset-normalizer==3.4.7
 click==8.3.2
 databases==0.9.0
-dill==0.4.0
+dill==0.4.1
 greenlet==3.4.0
 h11==0.16.0
 httpcore==1.0.9
