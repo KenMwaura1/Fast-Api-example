@@ -44,12 +44,14 @@ The fastest way to get started is using Docker Compose:
 ### Steps
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/KenMwaura1/Fast-Api-example.git
    cd Fast-Api-example
    ```
 
 2. **Start the application**
+
    ```bash
    docker-compose up -d --build
    ```
@@ -70,12 +72,14 @@ The fastest way to get started is using Docker Compose:
 ### Setup Instructions
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/KenMwaura1/Fast-Api-example.git
    cd Fast-Api-example
    ```
 
 2. **Backend Setup**
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate
@@ -97,20 +101,23 @@ docker run --rm -p 8000:8000 --env-file src/.env fast-api-example:local
 
 This `docker build` command sets the build context to `src` so the `COPY requirements.txt` in the Dockerfile resolves correctly.
 
-3. **Database Configuration**
+1. **Database Configuration**
    Configure your DATABASE_URL in `src/.env` (copy from `src/app/.env-example`):
+
    ```env
    DATABASE_URL=postgresql+asyncpg://user:password@localhost/dbname
    SECRET_KEY=your-secret-key
    ```
 
-4. **Run Migrations**
+2. **Run Migrations**
+
    ```bash
    cd src
    alembic upgrade head
    ```
 
-5. **Run the Application**
+3. **Run the Application**
+
    ```bash
    ./run.sh
    ```
@@ -122,12 +129,14 @@ A modern Vue 3 frontend built with Vite and Pinia is included.
 ### Setup
 
 1. **Navigate to frontend directory**
+
    ```bash
    cd vue-client
    npm install
    ```
 
 2. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -137,12 +146,14 @@ A modern Vue 3 frontend built with Vite and Pinia is included.
 ## 📡 API Endpoints
 
 ### Authentication
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/auth/register` | Register a new user |
 | POST | `/auth/token` | Login to get access token |
 
 ### Notes (Requires Auth)
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/notes/` | List notes (owned by user) |
@@ -184,12 +195,15 @@ Fast-Api-example/
 ## 🐛 Troubleshooting
 
 ### Database Migrations
+
 If you see "relation 'notes' already exists", ensure you have run `alembic upgrade head` rather than relying on `create_all`.
 
 ### Connection Refused
+
 If the backend can't connect to the DB in Docker, verify the `DATABASE_URL` uses `db` as the hostname: `postgresql+asyncpg://user:pass@db/dbname`.
 
 ### Frontend API URL
+
 Ensure `VITE_API_URL` in `vue-client/.env.development` points to the correct backend port (8002 for Docker, 8000 for local).
 
 ## 📝 License
@@ -199,6 +213,7 @@ This project is licensed under the [MIT License](LICENSE).
 ## 👤 Author
 
 **Kennedy Mwaura**
+
 - Twitter: [@Ken_Mwaura1](https://twitter.com/Ken_Mwaura1)
 - GitHub: [@KenMwaura1](https://github.com/KenMwaura1)
 
