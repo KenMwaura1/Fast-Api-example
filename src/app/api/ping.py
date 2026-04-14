@@ -1,12 +1,15 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from app.db import database
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
+from app.db import get_db
 
 router = APIRouter()
 
 
 class PingResponse(BaseModel):
     """Ping response schema"""
+
     status: str
     message: str
 
@@ -15,33 +18,25 @@ class PingResponse(BaseModel):
     "/ping",
     response_model=PingResponse,
     tags=["health"],
-    summary="Health check endpoint"
+    summary="Health check endpoint",
 )
-async def pong():
+async def pong(session: AsyncSession = Depends(get_db)):
     """
     Health check endpoint to verify API and database connectivity.
-    
+
     Returns the current status of the API and database connection.
     """
     try:
-        # Verify database connection if it exists
-        db_status = "unknown"
-        if hasattr(database, 'is_connected'):
-            db_status = "connected" if database.is_connected() else "disconnected"
-        
-        if db_status == "disconnected":
-            return PingResponse(
-                status="degraded",
-                message="API is running but database connection is unavailable"
-            )
-        
-        return PingResponse(
-            status="healthy",
-            message="API and database are operational"
-        )
-    except Exception as e:
-        # Return degraded status on error instead of 503
+        # Verify database connection by executing a simple query
+        await session.execute(text("SELECT 1"))
+        db_status = "connected"
+    except Exception:
+        db_status = "disconnected"
+
+    if db_status == "disconnected":
         return PingResponse(
             status="degraded",
-            message=f"Health check error: {str(e)}"
+            message="API is running but database connection is unavailable",
         )
+
+    return PingResponse(status="healthy", message="API and database are operational")
