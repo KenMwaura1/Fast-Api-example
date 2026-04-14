@@ -7,7 +7,6 @@ certifi==2026.2.25
 chardet==5.2.0
 charset-normalizer==3.4.7
 click==8.3.1
-databases==0.9.0
 dill==0.4.0
 greenlet==3.3.2
 h11==0.16.0
@@ -16,7 +15,6 @@ httptools==0.7.1
 httpx==0.28.1
 idna==3.11
 iniconfig==2.3.0
-isort==7.0.0
 lazy-object-proxy==1.12.0
 mccabe==0.7.0
 more-itertools==10.8.0
@@ -26,19 +24,16 @@ pluggy==1.6.0
 psycopg2-binary==2.9.11
 py==1.11.0
 pydantic==2.12.5
-# Let pip resolve a compatible pydantic-core (remove explicit pin)
+pydantic-settings==2.13.1
 Pygments==2.19.2
-pylint==4.0.4
 pyparsing==3.3.1
-pytest==9.0.2
 python-dotenv==1.2.2
 pytz==2025.2
 requests==2.33.1
 six==1.17.0
 SQLAlchemy==2.0.45
 fastapi==0.135.3
-# Let pip resolve Starlette (remove explicit pin)
-astroid==4.0.4
+astroid==4.1.2
 tomlkit==0.14.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
@@ -48,3 +43,10 @@ uvloop==0.22.1
 wcwidth==0.2.14
 websockets==16.0
 wrapt==2.0.1
+alembic==1.18.4
+passlib==1.7.4
+bcrypt==4.0.1
+python-jose==3.5.0
+email-validator==2.3.0
+python-multipart==0.0.24
+aiosqlite==0.22.1
