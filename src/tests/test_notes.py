@@ -1,7 +1,7 @@
 """
 Comprehensive tests for the Notes API endpoints
 """
-import json
+
 import pytest
 from datetime import datetime
 from app.api import crud
@@ -15,25 +15,29 @@ def get_iso_date():
 class TestCreateNote:
     """Tests for creating notes"""
 
-    def test_create_note_success(self, test_app, monkeypatch):
+    def test_create_note_success(self, test_app, monkeypatch, test_user):
         """Test successful note creation"""
         test_request_payload = {
             "title": "something",
             "description": "something else",
-            "completed": False
+            "completed": False,
+            "tags": ["work"],
         }
         test_response_payload = {
             "id": 1,
             "title": "something",
             "description": "something else",
             "completed": False,
-            "created_date": get_iso_date()
+            "is_deleted": False,
+            "tags": ["work"],
+            "owner_id": test_user.id,
+            "created_date": get_iso_date(),
         }
 
-        async def mock_post(payload):
+        async def mock_post(session, payload, owner_id):
             return 1
-        
-        async def mock_get(id):
+
+        async def mock_get(session, id):
             return test_response_payload
 
         monkeypatch.setattr(crud, "post", mock_post)
@@ -48,25 +52,34 @@ class TestCreateNote:
         [
             ({}, 422),  # Missing required fields
             ({"description": "bar"}, 422),  # Missing title
-            ({"title": "foo", "description": "bar", "completed": True}, 201),  # Valid
+            (
+                {"title": "foo", "description": "bar", "completed": True, "tags": []},
+                201,
+            ),  # Valid
             ({"title": "1", "description": "bar"}, 422),  # Title too short
             ({"title": "foo", "description": "1"}, 422),  # Description too short
             ({"title": "x" * 256, "description": "bar"}, 422),  # Title too long
             ({"title": "foo", "description": "x" * 1001}, 422),  # Description too long
-        ]
+        ],
     )
-    def test_create_note_validation(self, test_app, monkeypatch, test_payload, expected_status):
+    def test_create_note_validation(
+        self, test_app, monkeypatch, test_user, test_payload, expected_status
+    ):
         """Test note creation with invalid payloads"""
-        async def mock_post(payload):
+
+        async def mock_post(session, payload, owner_id):
             return 1
-        
-        async def mock_get(id):
+
+        async def mock_get(session, id):
             return {
                 "id": 1,
                 "title": test_payload.get("title", ""),
                 "description": test_payload.get("description", ""),
                 "completed": test_payload.get("completed", False),
-                "created_date": get_iso_date()
+                "is_deleted": False,
+                "tags": test_payload.get("tags", []),
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
             }
 
         monkeypatch.setattr(crud, "post", mock_post)
@@ -79,17 +92,20 @@ class TestCreateNote:
 class TestReadNotes:
     """Tests for reading notes"""
 
-    def test_read_single_note(self, test_app, monkeypatch):
+    def test_read_single_note(self, test_app, monkeypatch, test_user):
         """Test reading a single note by ID"""
         test_data = {
             "title": "something",
             "description": "something else",
             "id": 1,
             "completed": False,
-            "created_date": get_iso_date()
+            "is_deleted": False,
+            "tags": [],
+            "owner_id": test_user.id,
+            "created_date": get_iso_date(),
         }
 
-        async def mock_get(id):
+        async def mock_get(session, id):
             return test_data
 
         monkeypatch.setattr(crud, "get", mock_get)
@@ -100,7 +116,8 @@ class TestReadNotes:
 
     def test_read_note_not_found(self, test_app, monkeypatch):
         """Test reading non-existent note returns 404"""
-        async def mock_get(id):
+
+        async def mock_get(session, id):
             return None
 
         monkeypatch.setattr(crud, "get", mock_get)
@@ -117,7 +134,7 @@ class TestReadNotes:
         response = test_app.get("/notes/invalid")
         assert response.status_code == 422
 
-    def test_read_all_notes(self, test_app, monkeypatch):
+    def test_read_all_notes(self, test_app, monkeypatch, test_user):
         """Test reading all notes with default pagination"""
         test_data = [
             {
@@ -125,18 +142,26 @@ class TestReadNotes:
                 "description": "desc 1",
                 "id": 1,
                 "completed": False,
-                "created_date": get_iso_date()
+                "is_deleted": False,
+                "tags": ["work"],
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
             },
             {
                 "title": "note 2",
                 "description": "desc 2",
                 "id": 2,
                 "completed": False,
-                "created_date": get_iso_date()
-            }
+                "is_deleted": False,
+                "tags": [],
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
+            },
         ]
 
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             return test_data
 
         monkeypatch.setattr(crud, "get_notes", mock_get_notes)
@@ -146,7 +171,7 @@ class TestReadNotes:
         assert len(response.json()) == 2
         assert response.json() == test_data
 
-    def test_read_notes_with_pagination(self, test_app, monkeypatch):
+    def test_read_notes_with_pagination(self, test_app, monkeypatch, test_user):
         """Test note pagination with skip and limit"""
         test_data = [
             {
@@ -154,11 +179,16 @@ class TestReadNotes:
                 "description": "desc 1",
                 "id": 1,
                 "completed": False,
-                "created_date": get_iso_date()
+                "is_deleted": False,
+                "tags": [],
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
             }
         ]
 
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             return test_data if skip == 0 and limit == 1 else []
 
         monkeypatch.setattr(crud, "get_notes", mock_get_notes)
@@ -169,7 +199,10 @@ class TestReadNotes:
 
     def test_read_notes_pagination_invalid_limit(self, test_app, monkeypatch):
         """Test that limit exceeding maximum is rejected"""
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             return []
 
         monkeypatch.setattr(crud, "get_notes", mock_get_notes)
@@ -177,7 +210,7 @@ class TestReadNotes:
         response = test_app.get("/notes/?limit=101")
         assert response.status_code == 422
 
-    def test_read_notes_filter_by_completion(self, test_app, monkeypatch):
+    def test_read_notes_filter_by_completion(self, test_app, monkeypatch, test_user):
         """Test filtering notes by completion status"""
         completed_notes = [
             {
@@ -185,11 +218,16 @@ class TestReadNotes:
                 "description": "desc 1",
                 "id": 1,
                 "completed": True,
-                "created_date": get_iso_date()
+                "is_deleted": False,
+                "tags": [],
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
             }
         ]
 
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             if completed is True:
                 return completed_notes
             return []
@@ -201,7 +239,7 @@ class TestReadNotes:
         assert len(response.json()) == 1
         assert response.json()[0]["completed"] is True
 
-    def test_read_notes_search(self, test_app, monkeypatch):
+    def test_read_notes_search(self, test_app, monkeypatch, test_user):
         """Test searching notes by title/description"""
         search_results = [
             {
@@ -209,11 +247,16 @@ class TestReadNotes:
                 "description": "desc 1",
                 "id": 1,
                 "completed": False,
-                "created_date": get_iso_date()
+                "is_deleted": False,
+                "tags": [],
+                "owner_id": test_user.id,
+                "created_date": get_iso_date(),
             }
         ]
 
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             if search and "unique" in search:
                 return search_results
             return []
@@ -225,9 +268,12 @@ class TestReadNotes:
         assert len(response.json()) == 1
         assert "unique" in response.json()[0]["title"].lower()
 
-    def test_read_notes_combined_filters(self, test_app, monkeypatch):
+    def test_read_notes_combined_filters(self, test_app, monkeypatch, test_user):
         """Test combining search and completion filters"""
-        async def mock_get_notes(skip=0, limit=10, search=None, completed=None):
+
+        async def mock_get_notes(
+            session, owner_id, skip=0, limit=10, search=None, completed=None, tag=None
+        ):
             if search == "test" and completed is True:
                 return [
                     {
@@ -235,7 +281,10 @@ class TestReadNotes:
                         "description": "desc",
                         "id": 1,
                         "completed": True,
-                        "created_date": get_iso_date()
+                        "is_deleted": False,
+                        "tags": [],
+                        "owner_id": test_user.id,
+                        "created_date": get_iso_date(),
                     }
                 ]
             return []
@@ -250,25 +299,29 @@ class TestReadNotes:
 class TestUpdateNote:
     """Tests for updating notes"""
 
-    def test_update_note_success(self, test_app, monkeypatch):
+    def test_update_note_success(self, test_app, monkeypatch, test_user):
         """Test successful note update"""
         test_update_data = {
             "title": "updated title",
             "description": "updated description",
-            "completed": True
+            "completed": True,
+            "tags": ["personal"],
         }
         test_response = {
             "id": 1,
             "title": "updated title",
             "description": "updated description",
             "completed": True,
-            "created_date": get_iso_date()
+            "is_deleted": False,
+            "tags": ["personal"],
+            "owner_id": test_user.id,
+            "created_date": get_iso_date(),
         }
 
-        async def mock_get(id):
+        async def mock_get(session, id):
             return test_response if id == 1 else None
 
-        async def mock_put(id, payload):
+        async def mock_put(session, id, payload):
             return 1
 
         monkeypatch.setattr(crud, "get", mock_get)
@@ -280,15 +333,15 @@ class TestUpdateNote:
 
     def test_update_note_not_found(self, test_app, monkeypatch):
         """Test updating non-existent note returns 404"""
-        async def mock_get(id):
+
+        async def mock_get(session, id):
             return None
 
         monkeypatch.setattr(crud, "get", mock_get)
 
-        response = test_app.put("/notes/999", json={
-            "title": "foo",
-            "description": "bar"
-        })
+        response = test_app.put(
+            "/notes/999", json={"title": "foo", "description": "bar"}
+        )
         assert response.status_code == 404
 
     @pytest.mark.parametrize(
@@ -300,18 +353,28 @@ class TestUpdateNote:
             (1, {"title": "1", "description": "bar"}, 422),  # Title too short
             (1, {"title": "foo", "description": "1"}, 422),  # Description too short
             (0, {"title": "foo", "description": "bar"}, 422),  # Invalid ID
-        ]
+        ],
     )
-    def test_update_note_validation(self, test_app, monkeypatch, id, payload, expected_status):
+    def test_update_note_validation(
+        self, test_app, monkeypatch, test_user, id, payload, expected_status
+    ):
         """Test note update with invalid data"""
-        async def mock_get(note_id):
-            return None if note_id == 999 or note_id <= 0 else {
-                "id": note_id,
-                "title": "existing",
-                "description": "existing",
-                "completed": False,
-                "created_date": get_iso_date()
-            }
+
+        async def mock_get(session, note_id):
+            return (
+                None
+                if note_id == 999 or note_id <= 0
+                else {
+                    "id": note_id,
+                    "title": "existing",
+                    "description": "existing",
+                    "completed": False,
+                    "is_deleted": False,
+                    "tags": [],
+                    "owner_id": test_user.id,
+                    "created_date": get_iso_date(),
+                }
+            )
 
         monkeypatch.setattr(crud, "get", mock_get)
 
@@ -322,24 +385,27 @@ class TestUpdateNote:
 class TestDeleteNote:
     """Tests for deleting notes"""
 
-    def test_delete_note_success(self, test_app, monkeypatch):
+    def test_delete_note_success(self, test_app, monkeypatch, test_user):
         """Test successful note deletion"""
         test_data = {
             "title": "something",
             "description": "something else",
             "id": 1,
             "completed": False,
-            "created_date": get_iso_date()
+            "is_deleted": False,
+            "tags": [],
+            "owner_id": test_user.id,
+            "created_date": get_iso_date(),
         }
 
-        async def mock_get(id):
+        async def mock_get(session, id):
             return test_data if id == 1 else None
 
-        async def mock_delete(id):
+        async def mock_delete_note(session, id):
             return 1
 
         monkeypatch.setattr(crud, "get", mock_get)
-        monkeypatch.setattr(crud, "delete", mock_delete)
+        monkeypatch.setattr(crud, "delete_note", mock_delete_note)
 
         response = test_app.delete("/notes/1")
         assert response.status_code == 200
@@ -347,7 +413,8 @@ class TestDeleteNote:
 
     def test_delete_note_not_found(self, test_app, monkeypatch):
         """Test deleting non-existent note returns 404"""
-        async def mock_get(id):
+
+        async def mock_get(session, id):
             return None
 
         monkeypatch.setattr(crud, "get", mock_get)
@@ -363,4 +430,3 @@ class TestDeleteNote:
 
         response = test_app.delete("/notes/invalid")
         assert response.status_code == 422
-
