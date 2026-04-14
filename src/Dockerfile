@@ -20,7 +20,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+# Expect the Docker build context to be the `src` folder when building the image
+# (see README for exact build command). This keeps the Dockerfile simple and
+# avoids referencing `src/` twice when the context is already `src`.
+COPY requirements.txt ./requirements.txt
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -49,6 +52,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy application code
 COPY --chown=app:app . .
+
+# Use entrypoint script to run migrations
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 # Switch to non-root user
 USER app
