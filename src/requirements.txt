@@ -42,7 +42,7 @@ uvicorn==0.44.0
 uvloop==0.22.1
 wcwidth==0.6.0
 websockets==16.0
-wrapt==2.0.1
+wrapt==2.1.2
 alembic==1.18.4
 passlib==1.7.4
 bcrypt==4.0.1
