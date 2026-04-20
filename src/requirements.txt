@@ -24,7 +24,7 @@ platformdirs==4.9.6
 pluggy==1.6.0
 psycopg2-binary==2.9.11
 py==1.11.0
-pydantic==2.12.5
+pydantic==2.13.2
 pydantic-settings==2.13.1
 Pygments==2.19.2
 pyparsing==3.3.1
