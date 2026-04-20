@@ -26,7 +26,7 @@ psycopg2-binary==2.9.11
 py==1.11.0
 pydantic==2.13.2
 pydantic-settings==2.13.1
-Pygments==2.19.2
+Pygments==2.20.0
 pyparsing==3.3.2
 python-dotenv==1.2.2
 pytz==2025.2
