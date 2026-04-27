@@ -2,5 +2,5 @@ isort==7.0.0
 pylint==4.0.5
 astroid>=4.0.2,<4.2
 pytest==9.0.3
-ruff==0.15.11
+ruff==0.15.12
 
