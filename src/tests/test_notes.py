@@ -430,3 +430,19 @@ class TestDeleteNote:
 
         response = test_app.delete("/notes/invalid")
         assert response.status_code == 422
+
+    def test_delete_note_already_deleted(self, test_app, monkeypatch):
+        """Test that already soft-deleted note cannot be deleted again (regression)"""
+
+        async def mock_get(session, id):
+            return None
+
+        async def mock_delete_note(session, id):
+            return 0
+
+        monkeypatch.setattr(crud, "get", mock_get)
+        monkeypatch.setattr(crud, "delete_note", mock_delete_note)
+
+        response = test_app.delete("/notes/1")
+        assert response.status_code == 404
+        assert "not found" in response.json()["detail"].lower()
