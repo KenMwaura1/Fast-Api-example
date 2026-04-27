@@ -146,7 +146,7 @@ async def put(session: AsyncSession, id: int, payload: NoteSchema) -> Optional[i
 
 async def delete_note(session: AsyncSession, id: int) -> int:
     """Soft delete a note and return the number of rows affected"""
-    query = update(notes).where(notes.c.id == id).values(is_deleted=True)
+    query = update(notes).where(and_(notes.c.id == id, notes.c.is_deleted.is_(False))).values(is_deleted=True)
     result = await session.execute(query)
     await session.commit()
     return result.rowcount
