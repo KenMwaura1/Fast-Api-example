@@ -40,7 +40,7 @@ typing_extensions==4.15.0
 urllib3==2.6.3
 uvicorn==0.46.0
 uvloop==0.22.1
-wcwidth==0.6.0
+wcwidth==0.7.0
 websockets==16.0
 wrapt==2.1.2
 alembic==1.18.4
