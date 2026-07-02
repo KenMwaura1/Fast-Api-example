@@ -58,6 +58,8 @@ class TestCreateNote:
             ),  # Valid
             ({"title": "1", "description": "bar"}, 422),  # Title too short
             ({"title": "foo", "description": "1"}, 422),  # Description too short
+            ({"title": "   ", "description": "bar"}, 422),  # Blank title
+            ({"title": "foo", "description": "   "}, 422),  # Blank description
             ({"title": "x" * 256, "description": "bar"}, 422),  # Title too long
             ({"title": "foo", "description": "x" * 1001}, 422),  # Description too long
         ],
@@ -352,6 +354,8 @@ class TestUpdateNote:
             (999, {"title": "foo", "description": "bar"}, 404),  # Not found
             (1, {"title": "1", "description": "bar"}, 422),  # Title too short
             (1, {"title": "foo", "description": "1"}, 422),  # Description too short
+            (1, {"title": "   ", "description": "bar"}, 422),  # Blank title
+            (1, {"title": "foo", "description": "   "}, 422),  # Blank description
             (0, {"title": "foo", "description": "bar"}, 422),  # Invalid ID
         ],
     )
