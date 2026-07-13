@@ -6,7 +6,7 @@ attrs==25.4.0
 certifi==2026.4.22
 chardet==5.2.0
 charset-normalizer==3.4.7
-click==8.3.3
+click==8.4.2
 databases==0.9.0
 dill==0.4.1
 greenlet==3.5.0
