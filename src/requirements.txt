@@ -20,7 +20,7 @@ lazy-object-proxy==1.12.0
 mccabe==0.7.0
 more-itertools==10.8.0
 packaging==25.0
-platformdirs==4.9.6
+platformdirs==4.10.0
 pluggy==1.6.0
 psycopg2-binary==2.9.12
 py==1.11.0
