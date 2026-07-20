@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
+from pydantic import BaseModel, Field, ConfigDict, EmailStr, StringConstraints
 from datetime import datetime
-from typing import Optional, List
+from typing import Annotated, Optional, List
 
 
 class UserBase(BaseModel):
@@ -32,10 +32,14 @@ class TokenData(BaseModel):
 class NoteBase(BaseModel):
     """Base model for note creation and updates"""
 
-    title: str = Field(..., min_length=3, max_length=255, description="Note title")
-    description: str = Field(
-        ..., min_length=3, max_length=1000, description="Note description"
-    )
+    title: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=3, max_length=255),
+    ] = Field(..., description="Note title")
+    description: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=3, max_length=1000),
+    ] = Field(..., description="Note description")
     completed: bool = Field(default=False, description="Completion status")
     tags: List[str] = Field(default_factory=list, description="List of note tags")
 
