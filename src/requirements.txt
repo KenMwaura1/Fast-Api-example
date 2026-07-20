@@ -25,7 +25,7 @@ pluggy==1.6.0
 psycopg2-binary==2.9.12
 py==1.11.0
 pydantic==2.13.4
-pydantic-settings==2.14.1
+pydantic-settings==2.14.2
 Pygments==2.20.0
 pyparsing==3.3.2
 python-dotenv==1.2.2
