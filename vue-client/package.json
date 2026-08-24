@@ -12,7 +12,7 @@
     "axios": "^1.19.0",
     "vue": "^3.5.40",
     "pinia": "^3.0.4",
-    "rollup": "^4.62.2"
+    "rollup": "^4.62.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
