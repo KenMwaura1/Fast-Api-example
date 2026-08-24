@@ -34,7 +34,7 @@ requests==2.34.2
 six==1.17.0
 SQLAlchemy==2.0.50
 fastapi==0.136.1
-tomlkit==0.15.0
+tomlkit==0.15.1
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.7.0
