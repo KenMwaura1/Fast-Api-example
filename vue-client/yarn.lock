@@ -287,10 +287,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.9.tgz#cf3f0e876d7bee15a93ab925b82bf570a3904a24"
   integrity sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==
 
-"@vitejs/plugin-vue@^6.0.7":
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-6.0.7.tgz#194235d364a2c601c521b0410e524e521119059f"
-  integrity sha512-km+p+XdSz9Sxm5rqUbqcSfZYaAniKxWBj1KURl+Jr7UaPvvX7BmaWMdP69I5rrFDeQGyxAG7NXdc57vz+snhWg==
+"@vitejs/plugin-vue@^6.0.8":
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-6.0.8.tgz#1809d090b7c93b8f4ae83d3e7536655cbbb1c793"
+  integrity sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==
   dependencies:
     "@rolldown/pluginutils" "^1.0.1"
 
@@ -729,11 +729,6 @@ nanoid@^3.3.16:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.16.tgz#a04d8ec4b1f10009d2d533947aefe4293737816c"
   integrity sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==
 
-nanoid@^3.3.16:
-  version "3.3.16"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.16.tgz#a04d8ec4b1f10009d2d533947aefe4293737816c"
-  integrity sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==
-
 perfect-debounce@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/perfect-debounce/-/perfect-debounce-1.0.0.tgz#9c2e8bc30b169cc984a58b7d5b28049839591d2a"
@@ -756,16 +751,7 @@ pinia@^3.0.4:
   dependencies:
     "@vue/devtools-api" "^7.7.7"
 
-postcss@^8.5.14, postcss@^8.5.17:
-  version "8.5.20"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.20.tgz#316a139da79484ce55969fa7bb6f2f1abcc14060"
-  integrity sha512-lW616l85ucIQL+FocMmL7pQFPqBmwejrCMg+iPxyImlrANNJG9NHq/RkyCZopDhd8C3LA03PHRJDjkbGu8vvug==
-  dependencies:
-    nanoid "^3.3.16"
-    picocolors "^1.1.1"
-    source-map-js "^1.2.1"
-
-postcss@^8.5.19:
+postcss@^8.5.17, postcss@^8.5.19:
   version "8.5.20"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.20.tgz#316a139da79484ce55969fa7bb6f2f1abcc14060"
   integrity sha512-lW616l85ucIQL+FocMmL7pQFPqBmwejrCMg+iPxyImlrANNJG9NHq/RkyCZopDhd8C3LA03PHRJDjkbGu8vvug==
